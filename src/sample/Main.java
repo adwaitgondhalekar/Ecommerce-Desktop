@@ -28,17 +28,29 @@ import javafx.stage.Stage;
 
 import java.io.FileInputStream;
 import java.sql.*;
+import java.util.Timer;
 
 public class Main extends Application
 {
     GridPane root;
-    Label email_error = new Label  ("                                                                         ");
-    Label contact_error = new Label("                                                                         ");
+    Label email_error = new Label   ("");
+    Label contact_error = new Label ("");
+    Label username_error = new Label("");
+    Label password_error = new Label("");
+    Label username_error_login = new Label("");
+    Label password_error_login = new Label("");
     TextField entered_username = new TextField();
     PasswordField entered_password = new PasswordField();
     TextField entered_email = new TextField();
     TextField entered_contact = new TextField();
     Connection con;
+    Label signup_result = new Label("");
+    Label redirect = new Label("");
+    TextField usernametext = new TextField();
+    PasswordField passwordField = new PasswordField();
+    int detail_not_complete=0;
+    int detail_duplicate=0;
+    int login_fail=0;
     @Override
 
     public void start(Stage stage) throws Exception
@@ -52,11 +64,6 @@ public class Main extends Application
 
         rootnode.setPadding(new Insets(25, 25, 25, 25));
 
-        //Text scenetitle = new Text("Welcome!");
-
-        //scenetitle.setFont(Font.font("Tahoma",FontWeight.NORMAL,30));
-
-        //rootnode.add(scenetitle,1,0,1,1);
 
         HBox hBox = new HBox(5);
         HBox hBox1 = new HBox(5);
@@ -64,20 +71,22 @@ public class Main extends Application
         Label username = new Label("Username :");
         username.setFont(Font.font("Tahoma", FontWeight.NORMAL, 16));
 
-        TextField usernametext = new TextField();
 
-        Label username_error = new Label("Username");
-        username_error.setTranslateX(85);
+        usernametext.setPrefWidth(200);
+
+
+        username_error_login.setTranslateX(125);
 
         hBox.getChildren().addAll(username, usernametext);
 
         Label password = new Label("Password  :");
         password.setFont(Font.font("Tahoma", FontWeight.NORMAL, 16));
 
-        PasswordField passwordField = new PasswordField();
 
-        Label password_error = new Label("Pass");
-        password_error.setTranslateX(85);
+        passwordField.setPrefWidth(200);
+
+
+        password_error_login.setTranslateX(125);
 
         hBox1.getChildren().addAll(password, passwordField);
 
@@ -85,17 +94,22 @@ public class Main extends Application
         vBox.setTranslateX(-170);
 
         Button login = new Button("Login");
+        login.setTranslateX(40);
 
-        Label not_member = new Label("Not a member yet? ");
+        Label not_member = new Label("Not a member yet?");
         not_member.setAlignment(Pos.CENTER);
-        not_member.setTranslateX(50);
+        not_member.setTranslateX(100);
+        not_member.setTextFill(Color.RED);
 
         Label signup = new Label("SignUp");
-        signup.setTranslateX(60);
+        signup.setTranslateX(110);
+        signup.setTextFill(Color.DARKCYAN);
 
         Label login_text = new Label("LogIn");
         login_text.setFont(Font.font("Verdana", FontWeight.BOLD, FontPosture.ITALIC,35));
         login_text.setTextFill(Color.DARKCYAN);
+        login_text.setTranslateX(120);
+        login_text.setTranslateY(-20);
 
         HBox hBox2 = new HBox(5);
 
@@ -105,16 +119,22 @@ public class Main extends Application
 
         HBox hBox3 = new HBox(2);
         hBox3.getChildren().addAll(not_member,signup);
+        Image image=new Image("https://p.kindpng.com/picc/s/450-4502425_new-stop-and-shop-logo-hd-png-download.png");
+        ImageView imgview=new ImageView(image);
+        imgview.setFitHeight(150);
+        imgview.setFitWidth(300);
+        imgview.setTranslateX(40);
+        imgview.setTranslateY(-50);
 
-        vBox.getChildren().addAll(login_text,hBox,username_error, hBox1,password_error, hBox2,hBox3);
+        vBox.getChildren().addAll(imgview,login_text,hBox,username_error_login, hBox1,password_error_login, hBox2,hBox3);
 
 
         rootnode.add(vBox, 0, 0);
 
-        Image image = new Image("https://i.pinimg.com/originals/c1/d8/ab/c1d8abec7e0f0fb4ae66d7bba679b4a0.jpg");
+        Image imge = new Image("https://i.pinimg.com/originals/c1/d8/ab/c1d8abec7e0f0fb4ae66d7bba679b4a0.jpg");
 
 
-        BackgroundImage backgroundImage = new BackgroundImage(image, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+        BackgroundImage backgroundImage = new BackgroundImage(imge, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
 
 
         Background background = new Background(backgroundImage);
@@ -143,6 +163,92 @@ public class Main extends Application
                 sign_up(stage,scene);
             }
         });
+        login.setOnAction(new EventHandler<ActionEvent>()
+        {
+            @Override
+            public void handle(ActionEvent actionEvent)
+            {
+                try {
+                    app_login();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+
+            }
+        });
+    }
+
+    public void app_login() throws SQLException
+    {
+
+        usernametext.textProperty().addListener(new ChangeListener<String>()
+        {
+            @Override
+            public void changed(ObservableValue<? extends String> observableValue, String s, String t1)
+            {
+                if(t1.length()>s.length())
+                {
+                    username_error_login.setText("");
+                }
+                if(t1.length()==0)
+                {
+                    username_error_login.setText("Username not Entered!");
+                    username_error_login.setFont(Font.font("Tahoma", FontWeight.NORMAL, 13));
+                    username_error_login.setTextFill(Color.RED);
+                    login_fail=1;
+                }
+
+            }
+        });
+        passwordField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observableValue, String s, String t1)
+            {
+                if(t1.length()>s.length())
+                {
+                    password_error_login.setText("");
+                }
+                if(t1.length()==0)
+                {
+                    password_error_login.setText("Password not Entered!");
+                    login_fail=1;
+                }
+
+            }
+        });
+        if(login_fail==0) {
+
+            String login_username = usernametext.getText().strip();
+            String login_password = passwordField.getText().strip();
+
+            Statement stmt = con.createStatement();
+            String query = "select username,password from user where username='" + login_username + "'";
+            ResultSet resultSet = stmt.executeQuery(query);
+            if (resultSet.next() == false) {
+                username_error_login.setText("Profile does not exist");
+                username_error_login.setFont(Font.font("Tahoma", FontWeight.NORMAL, 13));
+                username_error_login.setTextFill(Color.RED);
+            } else {
+                String retrieved_username;
+                String retrieved_password;
+
+                retrieved_username = resultSet.getString("username");
+                retrieved_password = resultSet.getString("password");
+                System.out.println(retrieved_username);
+                System.out.println(retrieved_password);
+
+                if (retrieved_username == login_username && retrieved_password == login_password) {
+
+                } else {
+                    password_error_login.setText("Incorrect Password!");
+                    password_error_login.setFont(Font.font("Tahoma", FontWeight.NORMAL, 13));
+                    password_error_login.setTextFill(Color.RED);
+                }
+            }
+        }
+
+
+
     }
 
 
@@ -172,7 +278,7 @@ public class Main extends Application
 
         Statement stmt1 = con.createStatement();
 
-        stmt1.executeUpdate("create table if not exists user(username varchar(20) ,email varchar(30),password varchar(20),contact_no int(10),primary key(username));");
+        stmt1.executeUpdate("create table if not exists user(username varchar(20) ,email varchar(30),password varchar(20),contact_no varchar(10),primary key(username));");
 
         Statement stm2=con.createStatement();
 
@@ -182,7 +288,7 @@ public class Main extends Application
         stmt3.executeUpdate("create table if not exists orders(order_id varchar(20),username varchar(20),tot_amt float, primary key(order_id),foreign key(username) references user(username));");
 
         Statement stmt4=con.createStatement();
-        stmt4.executeUpdate("create table if not exists product(product_id varchar(20),product_name varchar(20),product_category varchar(20),price float(10),product_img varchar(50),description varchar(40),primary key(product_id));");
+        stmt4.executeUpdate("create table if not exists product(product_id varchar(20),product_name varchar(20),product_category varchar(20),price float(10),product_img varchar(200),description varchar(40),primary key(product_id));");
 
         Statement stmt5= con.createStatement();
         stmt5.executeUpdate("create table if not exists contains(product_id varchar(20),order_id varchar(20),foreign key(product_id) references product(product_id),foreign key(order_id) references orders(order_id));");
@@ -210,13 +316,13 @@ public class Main extends Application
         root_signup.setBackground(background);
 
         Label username = new Label("Username:");
-        Label username_error = new Label("                                                                        ");
+
         username.setFont(Font.font("Tahoma", FontWeight.NORMAL, 16));
 
         entered_username.setPrefWidth(200);
 
         Label password = new Label("Password: ");
-        Label password_error = new Label("                                                                        ");
+
         password.setFont(Font.font("Tahoma", FontWeight.NORMAL, 16));
 
         entered_password.setPrefWidth(200);
@@ -244,9 +350,11 @@ public class Main extends Application
                         contact_error.setText("Contact cannot be greater than 10 digits!");
                         contact_error.setFont(Font.font("Tahoma", FontWeight.NORMAL, 13));
                         contact_error.setTextFill(Color.RED);
+                        detail_not_complete=1;
                     }
-                    if(t1.length()==10)
+                    else if(t1.length()==10)
                     {
+                        contact_error.setText("");
                         for(int i=0;i<t1.length();i++)
                         {
                             if(!Character.isDigit(t1.charAt(i)))
@@ -254,17 +362,28 @@ public class Main extends Application
                                 contact_error.setText("Contact can only contain numerical digits!");
                                 contact_error.setFont(Font.font("Tahoma", FontWeight.NORMAL, 13));
                                 contact_error.setTextFill(Color.RED);
+                                detail_not_complete=1;
                                 break;
 
                             }
                         }
 
                     }
+                    else if(t1.length()<10)
+                    {
+                        contact_error.setText("Contact should contain 10 digits!");
+                        contact_error.setFont(Font.font("Tahoma", FontWeight.NORMAL, 13));
+                        contact_error.setTextFill(Color.RED);
+                        detail_not_complete=1;
+
+
+                    }
+                    else
+                    {
+                        contact_error.setText("");
+                    }
                 }
-                else
-                {
-                    contact_error.setText("");
-                }
+
 
             }
         });
@@ -282,6 +401,7 @@ public class Main extends Application
                             email_error.setText("Email not entered correctly!");
                             email_error.setFont(Font.font("Tahoma",FontWeight.NORMAL,13));
                             email_error.setTextFill(Color.RED);
+                            detail_not_complete=1;
                             break;
                         }
                     }
@@ -300,6 +420,7 @@ public class Main extends Application
                         email_error.setText("Email not entered correctly!");
                         email_error.setFont(Font.font("Tahoma",FontWeight.NORMAL,13));
                         email_error.setTextFill(Color.RED);
+                        detail_not_complete=1;
 
 
                     }
@@ -308,6 +429,7 @@ public class Main extends Application
                         email_error.setText("Email not entered correctly!");
                         email_error.setFont(Font.font("Tahoma",FontWeight.NORMAL,13));
                         email_error.setTextFill(Color.RED);
+                        detail_not_complete=1;
 
                     }
                     else
@@ -322,12 +444,13 @@ public class Main extends Application
 
         Button back = new Button("BACK");
 
-        back.setTranslateY(-300);
-        back.setTranslateX(-400);
+        back.setTranslateY(-120);
+        back.setTranslateX(-480);
 
         Button reset = new Button("Reset");
 
-        reset.setOnAction(new EventHandler<ActionEvent>() {
+        reset.setOnAction(new EventHandler<ActionEvent>()
+        {
             @Override
             public void handle(ActionEvent actionEvent)
             {
@@ -335,6 +458,12 @@ public class Main extends Application
                 entered_password.clear();
                 entered_contact.clear();
                 entered_email.clear();
+                username_error.setText("");
+                password_error.setText("");
+                contact_error.setText("");
+                email_error.setText("");
+                redirect.setText("");
+                signup_result.setText("");
 
             }
         });
@@ -355,25 +484,35 @@ public class Main extends Application
         submit.setPrefWidth(60);
 
 
-        hBox.getChildren().addAll(username,entered_username,username_error);
-        hBox1.getChildren().addAll(password,entered_password,password_error);
-        hBox2.getChildren().addAll(email,entered_email,email_error);
-        hBox3.getChildren().addAll(contactno,entered_contact,contact_error);
+        hBox.getChildren().addAll(username,entered_username);
+        hBox1.getChildren().addAll(password,entered_password);
+        hBox2.getChildren().addAll(email,entered_email);
+        hBox3.getChildren().addAll(contactno,entered_contact);
         hBox4.getChildren().addAll(reset,submit);
 
-        VBox vBox = new VBox(15);
+        VBox vBox = new VBox(8);
+
         Label Signup= new Label("SIGN UP");
+
+
+
+
         Signup.setFont(Font.font("Verdana", FontWeight.BOLD, FontPosture.ITALIC,35));
         Signup.setTextFill(Color.DARKCYAN);
         Signup.setTranslateX(95);
         Signup.setTranslateY(-20);
 
+        username_error.setTranslateX(110);
+        password_error.setTranslateX(110);
+        email_error.setTranslateX(110);
+        contact_error.setTranslateX(110);
 
-        vBox.getChildren().addAll(Signup,hBox,hBox1,hBox2,hBox3,hBox4);
-        vBox.setTranslateX(100);
+
+        vBox.getChildren().addAll(Signup,hBox,username_error,hBox1,password_error,hBox2,email_error,hBox3,contact_error,hBox4,signup_result,redirect);
+        vBox.setTranslateX(-50);
 
         root_signup.add(back,0,0);
-        root_signup.add(vBox,0,0);
+        root_signup.add(vBox,2,2);
 
 
         image = new Image("https://images.wallpaperscraft.com/image/trolley_people_entertainment_92179_1920x1080.jpg");
@@ -390,10 +529,18 @@ public class Main extends Application
 
         stage.show();
 
-        back.setOnAction(new EventHandler<ActionEvent>() {
+        back.setOnAction(new EventHandler<ActionEvent>()
+        {
             @Override
             public void handle(ActionEvent actionEvent)
             {
+
+                entered_contact.clear();
+                entered_email.clear();
+                entered_password.clear();
+                entered_username.clear();
+                signup_result.setText("");
+                redirect.setText("");
                 scene.setRoot(root);
                 stage.setScene(scene);
                 stage.show();
@@ -403,13 +550,155 @@ public class Main extends Application
             }
         });
 
-        submit.setOnAction(new EventHandler<ActionEvent>() {
+        entered_username.textProperty().addListener(new ChangeListener<String>()
+        {
+            @Override
+            public void changed(ObservableValue<? extends String> observableValue, String s, String t1)
+            {
+                if(t1.length()>s.length())
+                {
+                    username_error.setText("");
+                }
+
+            }
+        });
+
+        entered_password.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observableValue, String s, String t1)
+            {
+                if(t1.length()>s.length())
+                {
+                    password_error.setText("");
+                }
+
+
+            }
+        });
+
+
+        submit.setOnAction(new EventHandler<ActionEvent>()
+        {
             @Override
             public void handle(ActionEvent actionEvent)
             {
+                detail_not_complete=0;
+                detail_duplicate=0;
+                String username = entered_username.getText().strip();
+                String password = entered_password.getText().strip();
+                String email = entered_email.getText().strip();
+                String contact = entered_contact.getText().strip();
 
 
-                user_details();
+                if(entered_username.getText().isEmpty())
+                {
+                    username_error.setText("Username not Entered!");
+                    username_error.setFont(Font.font("Tahoma",FontWeight.NORMAL,13));
+                    username_error.setTextFill(Color.RED);
+                    detail_not_complete=1;
+                }
+                else
+                {
+                    try
+                    {
+                        Statement statement = con.createStatement();
+                        String query="select username from user where username='"+username+"'";
+
+                        ResultSet resultSet = statement.executeQuery(query);
+
+                        if(!(resultSet.next()==false))
+                        {
+                            detail_duplicate=1;
+                            username_error.setText("Username already taken");
+                            username_error.setFont(Font.font("Tahoma",FontWeight.NORMAL,13));
+                            username_error.setTextFill(Color.RED);
+
+                        }
+
+
+
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+
+                }
+                if(entered_password.getText().isEmpty())
+                {
+                    password_error.setText("Password not Entered!");
+                    password_error.setFont(Font.font("Tahoma",FontWeight.NORMAL,13));
+                    password_error.setTextFill(Color.RED);
+                    detail_not_complete=1;
+                }
+                if(entered_email.getText().isEmpty())
+                {
+                    email_error.setText("Email not Entered!");
+                    email_error.setFont(Font.font("Tahoma",FontWeight.NORMAL,13));
+                    email_error.setTextFill(Color.RED);
+                    detail_not_complete=1;
+                }
+                if (entered_contact.getText().isEmpty())
+                {
+                    contact_error.setText("Contact not Entered!");
+                    contact_error.setFont(Font.font("Tahoma",FontWeight.NORMAL,13));
+                    contact_error.setTextFill(Color.RED);
+                    detail_not_complete=1;
+                }
+                else
+                {
+                    try
+                    {
+                        Statement statement = con.createStatement();
+                        String query="select contact_no from user where contact_no='"+contact+"'";
+
+                        ResultSet resultSet = statement.executeQuery(query);
+
+                        if(!(resultSet.next()==false))
+                        {
+                            detail_duplicate=1;
+                            contact_error.setText("Number linked to another account!");
+                            contact_error.setFont(Font.font("Tahoma",FontWeight.NORMAL,13));
+                            contact_error.setTextFill(Color.RED);
+
+
+                        }
+
+
+
+                    } catch (SQLException throwables) {
+                        throwables.printStackTrace();
+                    }
+
+
+                }
+
+
+                if(detail_not_complete==0 && detail_duplicate==0)
+                {
+                    try
+                    {
+                        user_details();
+                    } catch (SQLException throwables)
+                    {
+                        throwables.printStackTrace();
+                    } catch (InterruptedException e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
+                if(detail_not_complete==1)
+                {
+                    signup_result.setText("Fill in the details!!");
+                    signup_result.setFont(Font.font("Tahoma",FontWeight.NORMAL,13));
+                    signup_result.setTextFill(Color.RED);
+                    signup_result.setTranslateX(130);
+
+                    redirect.setText("");
+                }
+
+
+
+
+
 
 
             }
@@ -420,45 +709,40 @@ public class Main extends Application
 
     }
 
-    private void user_details() throws SQLException {
-        String username = entered_username.getText();
-        String password = entered_password.getText();
-        String email = entered_email.getText();
-        String contact = entered_contact.getText();
+    private void user_details() throws SQLException, InterruptedException
+    {
+        String username = entered_username.getText().strip();
+        String password = entered_password.getText().strip();
+        String email = entered_email.getText().strip();
+        String contact = entered_contact.getText().strip();
 
         Statement stmt =con.createStatement();
 
+        String query="insert into user values("+"'"+username+"','"+email+"',"+"'"+password+"',"+contact+");";
+
+        //System.out.print(username+" "+contact+" "+email+" "+password);
+
+        //System.out.print(query);
+
+        stmt.executeUpdate(query);
+
+        //Thread.sleep(2000);
+
+        signup_result.setText("Sign Up Successful!");
+        signup_result.setFont(Font.font("Tahoma",FontWeight.NORMAL,13));
+        signup_result.setTextFill(Color.GREEN);
+        signup_result.setTranslateX(130);
+
+
+        redirect.setText("Return to the Main Page and Login!");
+        redirect.setFont(Font.font("Aerial",FontWeight.NORMAL,FontPosture.ITALIC,13));
+        redirect.setTranslateX(85);
+
+
+
+
+
     }
 
-    public void contact_validation(String s,String t1)
-    {
-        if(s.length()<t1.length())
-        {
-            if(t1.length()>10) {
 
-                contact_error.setText("Contact cannot be greater than 10 digits!");
-                contact_error.setFont(Font.font("Tahoma", FontWeight.NORMAL, 13));
-                contact_error.setTextFill(Color.RED);
-            }
-            if(t1.length()==10)
-            {
-                for(int i=0;i<t1.length();i++)
-                {
-                    if(!Character.isDigit(t1.charAt(i)))
-                    {
-                        contact_error.setText("Contact can only contain numerical digits!");
-                        contact_error.setFont(Font.font("Tahoma", FontWeight.NORMAL, 13));
-                        contact_error.setTextFill(Color.RED);
-                        break;
-
-                    }
-                }
-
-            }
-        }
-        else
-        {
-            contact_error.setText("");
-        }
-    }
 }
