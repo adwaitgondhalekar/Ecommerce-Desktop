@@ -7,6 +7,7 @@ import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
@@ -64,18 +65,28 @@ public class dashboard
         tilePane.setPrefColumns(4);
         tilePane.setStyle("-fx-background-color: lightblue;");
 
-        HBox tiles[] = new HBox[50];
+        VBox tiles[] = new VBox[50];
         for (int i = 0; i < 50; i++)
         {
             ImageView imageView = new ImageView("https://images.unsplash.com/photo-1483985988355-763728e1935b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80");
-           // imageView.setFitWidth(200);
-            //imageView.setFitHeight(200);
-            tiles[i] = new HBox(imageView);
+            imageView.setFitWidth(250);
+            imageView.setFitHeight(250);
+            imageView.setPreserveRatio(true);
+
+            Label prod_name = new Label("Shirt");
+            Label price = new Label("₹200");
+            Label desc = new Label("Awesome shirt");
+            Label size = new Label("20");
+            Button add_to_cart = new Button("Add to Cart");
+
+            tiles[i] = new VBox(imageView,prod_name,price,desc,size,add_to_cart);
             tiles[i].setStyle("-fx-border-color: black;");
             tiles[i].setPrefWidth(200);
             tiles[i].setPrefHeight(250);
-            tiles[i].setPadding(new Insets(70));
+            tiles[i].setPadding(new Insets(10,10,50,10));
             tilePane.getChildren().add(tiles[i]);
+
+
         }
 
         VBox vbox = new VBox();
