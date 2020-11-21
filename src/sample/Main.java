@@ -169,16 +169,18 @@ public class Main extends Application
             public void handle(ActionEvent actionEvent)
             {
                 try {
-                    app_login();
+                    app_login(stage,scene);
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
 
             }
         });
     }
 
-    public void app_login() throws SQLException
+    public void app_login(Stage stage,Scene scene) throws Exception
     {
 
         usernametext.textProperty().addListener(new ChangeListener<String>()
@@ -237,9 +239,12 @@ public class Main extends Application
                 System.out.println(retrieved_username);
                 System.out.println(retrieved_password);
 
-                if (retrieved_username == login_username && retrieved_password == login_password) {
-
-                } else {
+                if (retrieved_username.equals(login_username) && retrieved_password.equals(login_password))
+                {
+                    System.out.println(login_username);
+                    dashboard.star(stage,scene);
+                }
+                else {
                     password_error_login.setText("Incorrect Password!");
                     password_error_login.setFont(Font.font("Tahoma", FontWeight.NORMAL, 13));
                     password_error_login.setTextFill(Color.RED);
@@ -262,7 +267,7 @@ public class Main extends Application
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/ecommerce", "root", "adwait");
+                    "jdbc:mysql://localhost:3306/ecommerce", "root", "shreya");
 //here ecommerce is database name, root is username and adwait is the password
             Database_Connection.getInstance().getConnection(con);
 
