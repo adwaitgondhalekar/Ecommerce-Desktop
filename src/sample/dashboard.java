@@ -16,25 +16,45 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.text.*;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 import java.awt.*;
 import java.io.FileInputStream;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 import javafx.geometry.Insets;
 
 public class dashboard
 {
+    static Connection con;
+
+
     public static void star(Stage primaryStage,Scene scene) throws Exception
     {
+
         String styles =
-                "-fx-font-size:20px;" +
+                "-fx-font-size:25px;" +
                         "-fx-padding:10px;" +
-                        " -fx-background-color : #C6DEF1;" +
+                        " -fx-background-color : #C6DEF1;"+
                         "-fx-font-color:#FDFCDC;";
+
+
         //String color = ;
+        Image LogoImage=new Image("https://p.kindpng.com/picc/s/450-4502425_new-stop-and-shop-logo-hd-png-download.png");
+        ImageView LogoimageView=new ImageView(LogoImage);
+        LogoimageView.setFitHeight(40);
+        LogoimageView.setFitWidth(80);
+        LogoimageView.setPreserveRatio(true);
+
         MenuBar leftBar = new MenuBar();
-        leftBar.setPrefHeight(40);
+
+//        leftBar.setPrefHeight(40);
+        Menu logoitem = new Menu("",LogoimageView);
+        leftBar.getMenus().add(logoitem);
         Menu men = new Menu("Men");
         men.getItems().addAll(new MenuItem("Shirts"), new MenuItem("Trousers"));
         Menu women = new Menu("Women");
@@ -42,52 +62,84 @@ public class dashboard
         women.getItems().addAll(new MenuItem("Tops"), new MenuItem("Dresses"));
         leftBar.getMenus().add(men);
         leftBar.getMenus().add(women);
+
         MenuBar rightBar = new MenuBar();
         rightBar.getMenus().addAll(new Menu("Cart"), new Menu("Sign out"));
         rightBar.setStyle(styles);
-        rightBar.setPrefHeight(40);
+//        rightBar.setPrefHeight(40);
         Region spacer = new Region();
         spacer.getStyleClass().add("menu-bar");
         spacer.setStyle(styles);
 
         HBox.setHgrow(spacer, Priority.SOMETIMES);
         HBox menubars = new HBox(leftBar, spacer, rightBar);
-//        BorderPane root= new BorderPane();
         menubars.setPrefWidth(1600);
-//        GridPane home_root = new GridPane();
-//        home_root.add(menubars, 0, 0, 1, 1);
-
+        menubars.setPrefWidth(40);
+        menubars.setStyle(styles);
 
         TilePane tilePane = new TilePane();
-        tilePane.setPadding(new Insets(50));
+        tilePane.setPadding(new Insets(70));
         tilePane.setVgap(20);
         tilePane.setHgap(20);
-        tilePane.setPrefColumns(4);
-        tilePane.setStyle("-fx-background-color: lightblue;");
+        tilePane.setPrefColumns(2);
+        //tilePane.setStyle("-fx-background-color:#c6e79d;");
+        //tilePane.setStyle("-fx-background-color:#c3b2d8;");
+        tilePane.setStyle("-fx-background-color:black;");
 
+        con=Database_Connection.getInstance().con;
+        Statement stmt = con.createStatement();
+        String query = "select product_name,price,product_img from product;";
+        ResultSet resultSet = stmt.executeQuery(query);
+        String prod_names[]=new String[20];
+        String prod_prices[]=new String[20];
+        String prod_imgs[]=new String[20];
+        int i=0;
+        while(resultSet.next()) {
+            prod_names[i]=resultSet.getString("product_name");
+            prod_prices[i]=resultSet.getString("price");
+            prod_imgs[i]=resultSet.getString("product_img");
+            i++;
+
+        }
         VBox tiles[] = new VBox[50];
-        for (int i = 0; i < 50; i++)
+        for (i = 0; i < 20; i++)
         {
-            ImageView imageView = new ImageView("https://images.unsplash.com/photo-1483985988355-763728e1935b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80");
+
+            Image image = new Image(prod_imgs[i]);
+            ImageView imageView = new ImageView();
+            imageView.setImage(image);
             imageView.setFitWidth(250);
             imageView.setFitHeight(250);
+            imageView.setSmooth(true);
+            imageView.setCache(true);
             imageView.setPreserveRatio(true);
+            HBox hbxImg = new HBox();
+            hbxImg.setAlignment(Pos.CENTER);
+            hbxImg.getChildren().add(imageView);
 
-            Label prod_name = new Label("Shirt");
-            Label price = new Label("₹200");
-            Label desc = new Label("Awesome shirt");
-            Label size = new Label("20");
+            Text text_1 = new Text(prod_names[i]);
+            TextFlow prod_name = new TextFlow(text_1);
+            text_1.setFont(Font.font("Verdana", FontPosture.ITALIC ,13));
+            Label price = new Label("Price:"+prod_prices[i]);
+            price.setAlignment(Pos.CENTER_LEFT);
+            price.setTranslateY(20);
+            price.setFont(Font.font(13));
+            //Label desc = new Label("Description"+"Awesome shirt");
+            //Label size = new Label("20");
             Button add_to_cart = new Button("Add to Cart");
+            add_to_cart.setStyle("-fx-background-color: #D9C6F1;-fx-border-color: black;");
+            add_to_cart.setTranslateY(20);
 
-            tiles[i] = new VBox(imageView,prod_name,price,desc,size,add_to_cart);
-            tiles[i].setStyle("-fx-border-color: black;");
+            tiles[i] = new VBox(10,hbxImg,prod_name,price,add_to_cart);
+            //tiles[i].setAlignment(Pos.CENTER);
+            tiles[i].setStyle("-fx-border-color: black;-fx-background-color:#e8dcf6;");
+            //
             tiles[i].setPrefWidth(200);
             tiles[i].setPrefHeight(250);
             tiles[i].setPadding(new Insets(10,10,50,10));
             tilePane.getChildren().add(tiles[i]);
-
-
         }
+        tilePane.setAlignment(Pos.CENTER);
 
         VBox vbox = new VBox();
         vbox.setAlignment(Pos.TOP_CENTER);
