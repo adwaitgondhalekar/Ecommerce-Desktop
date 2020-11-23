@@ -261,7 +261,7 @@ public class Main extends Application
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/ecommerce", "root", "shreya");
+                    "jdbc:mysql://localhost:3306/ecommerce", "root", "radha17");
 //here ecommerce is database name, root is username and adwait is the password
             Database_Connection.getInstance().getConnection(con);
 
@@ -355,6 +355,35 @@ public class Main extends Application
         Statement stmt26 = con.createStatement();
         stmt26.executeUpdate("insert ignore into product values('S_10','SOJANYA Men Blue Classic Regular Fit Solid Formal Shirt','shirts',674,'https://sojanya.com/pub/media/catalog/product/cache/b47dab4c1b2aa306dcdd4a51ed7c4687/s/j/sjr-shirt-plain-11014-blue-1.jpg','Blue solid formal shirt, has a spread collar, long sleeves, button placket, and curved hem')");
 
+        Statement stmt27 = con.createStatement();
+        stmt27.executeUpdate("insert ignore into product values('Tr_01','Black coffee Men Grey Solid Slim Fit Flat-Front Trousers','trousers',659,'https://assets.myntassets.com/h_1440,q_100,w_1080/v1/assets/images/1488165/2016/8/31/11472626250497-Black-coffee-Men-Grey-Solid-Slim-Fit-Flat-Front-Trousers-5461472626250285-1.jpg','Grey solid formal mid-rise flat-front trousers, has four pockets, a zip fly and button closure, a waistband with belt loops, unsitched hems')");
+
+        Statement stmt28 = con.createStatement();
+        stmt28.executeUpdate("insert ignore into product values('Tr_02','Hangup Men Black & Black Solid Formal Trousers','trousers',751,'https://assets.myntassets.com/fl_progressive/h_960,q_80,w_720/v1/assets/images/7271326/2018/9/4/27ff27d1-0f05-4ea6-9445-54b651ea1f521536045059208-hangup-solid-mens-trousers-6601536045059050-2.jpg','Black and black solid mid-rise formal trousers, has a button closure, three pockets.The style does not come with a belt')");
+
+        Statement stmt29 = con.createStatement();
+        stmt29.executeUpdate("insert ignore into product values('Tr_03','Hangup Men Blue Smart Regular Fit Solid Formal Trousers','trousers',1599,'https://assets.myntassets.com/h_1440,q_100,w_1080/v1/assets/images/9302095/2019/4/13/8a35eae6-31c0-4671-9f43-16509b7ddfb11555135437583-Hangup-Men-Blue--Blue-Regular-Fit-Solid-Formal-Trousers-4481-1.jpg','Blue solid mid-rise formal trousers, has a hook and bar closure, four pockets')");
+
+        Statement stmt30 = con.createStatement();
+        stmt30.executeUpdate("insert ignore into product values('Tr_04','Black coffee Men Black & Grey Slim Fit Checked Formal Trousers','trousers',619,'https://assets.myntassets.com/dpr_1.5,q_60,w_400,c_limit,fl_progressive/assets/images/productimage/2020/1/1/177c5bdd-28a7-42fc-a4c4-02c3c6525f661577831644619-1.jpg','Black and Grey checked mid-rise trousers, button closure, and 4 pockets')");
+
+        Statement stmt31 = con.createStatement();
+        stmt31.executeUpdate("insert ignore into product values('Tr_05','Peter England Men Beige Slim Fit Solid Formal Trousers','trousers',1169,'https://assets.abfrlcdn.com/img/app/product/5/512905-3863024.jpg?auto=format','Beige solid mid-rise formal trousers, has a button closure closure, 4 pockets.Our stylist has paired these trousers with a belt.This pair of trousers does not come with a belt')");
+
+        Statement stmt32 = con.createStatement();
+        stmt32.executeUpdate("insert ignore into product values('Tr_06','Louis Philippe Ath.Work Men Beige Comfy Tapered Fit Solid Formal Trousers','trousers',1839,'https://assets.myntassets.com/dpr_1.5,q_60,w_400,c_limit,fl_progressive/h_373,q_80,w_280/v1/assets/images/10857548/2019/11/25/303e8035-3cd0-4b5a-a252-557caed0c2031574664790187-Louis-Philippe-AthWork-Men-Khaki-Comfort-Tapered-Fit-Self-De-1.jpg','Beige solid mid-rise trousers, button closure, and 4 pockets.The model is wearing a belt from the stylists collection. The product does not come with the belt.')");
+
+        Statement stmt33 = con.createStatement();
+        stmt33.executeUpdate("insert ignore into product values('Tr_07','SOJANYA Men Grey & Blue Smart Fit Checked Formal Trousers','trousers',896,'https://shoprapy.com/wp-content/uploads/2020/08/bec72062-8a00-4170-9f18-eabcc720f4811580468275879-SOJANYA-Men-Blue-Smart-Regular-Fit-Checked-Regular-Trousers-1.jpg','Green and blue checked mid-rise knitted formal trousers, button closure, zip fly and 5 pockets')");
+
+        Statement stmt34 = con.createStatement();
+        stmt34.executeUpdate("insert ignore into product values('Tr_08','SOJANYA Men Grey & Off-White Smart Fit Striped Formal Trousers','trousers',896,'https://sojanya.com/pub/media/catalog/product/cache/b47dab4c1b2aa306dcdd4a51ed7c4687/s/j/sjr-trou-strip-803-grey-1.jpg','Grey and Off-white striped woven mid-rise formal trousers, button closure, zip fly and 5 pockets')");
+
+        Statement stmt35 = con.createStatement();
+        stmt35.executeUpdate("insert ignore into product values('Tr_09','SOJANYA Men Navy Blue & Pink Smart Fit Striped Formal Trousers','trousers',896,'https://assets.myntassets.com/dpr_1.5,q_60,w_400,c_limit,fl_progressive/assets/images/11398086/2020/2/10/ca7d6a04-996c-4e71-a17e-5c7bfda64b571581330771117-SOJANYA-Men-Navy-Blue--Pink-Smart-Regular-Fit-Striped-Regula-1.jpg','Navy blue and pink striped mid-rise formal trousers, button closure, and five pockets')");
+
+        Statement stmt36 = con.createStatement();
+        stmt36.executeUpdate("insert ignore into product values('Tr_10','MANQ Men Coffee Brown Smart Slim Fit Solid Formal Trousers','trousers',764,'https://www.manq.in/wp-content/uploads/2019/12/1-6.jpg','Coffee Brown solid mid-rise trousers, button closure,zip fly  and 5 pockets.Our stylist has paired these trousers with a belt.This pair of trousers does not come with a beltS')");
     }
 
     public void sign_up(Stage stage,Scene scene)

@@ -1,32 +1,21 @@
 package sample;
 
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.text.*;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 
-import java.awt.*;
-import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
-
-import javafx.geometry.Insets;
 
 public class dashboard
 {
@@ -90,9 +79,9 @@ public class dashboard
         Statement stmt = con.createStatement();
         String query = "select product_name,price,product_img from product;";
         ResultSet resultSet = stmt.executeQuery(query);
-        String prod_names[]=new String[20];
-        String prod_prices[]=new String[20];
-        String prod_imgs[]=new String[20];
+        String prod_names[]=new String[30];
+        String prod_prices[]=new String[30];
+        String prod_imgs[]=new String[30];
         int i=0;
         while(resultSet.next()) {
             prod_names[i]=resultSet.getString("product_name");
@@ -102,7 +91,7 @@ public class dashboard
 
         }
         VBox tiles[] = new VBox[50];
-        for (i = 0; i < 20; i++)
+        for (i = 0; i < 30; i++)
         {
 
             Image image = new Image(prod_imgs[i]);
