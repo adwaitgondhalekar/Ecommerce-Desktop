@@ -261,7 +261,7 @@ public class Main extends Application
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/ecommerce", "root", "radha17");
+                    "jdbc:mysql://localhost:3306/ecommerce", "root", "shreya");
 //here ecommerce is database name, root is username and adwait is the password
             Database_Connection.getInstance().getConnection(con);
 
@@ -384,6 +384,68 @@ public class Main extends Application
 
         Statement stmt36 = con.createStatement();
         stmt36.executeUpdate("insert ignore into product values('Tr_10','MANQ Men Coffee Brown Smart Slim Fit Solid Formal Trousers','trousers',764,'https://www.manq.in/wp-content/uploads/2019/12/1-6.jpg','Coffee Brown solid mid-rise trousers, button closure,zip fly  and 5 pockets.Our stylist has paired these trousers with a belt.This pair of trousers does not come with a beltS')");
+        //Tops
+        Statement stmt37 = con.createStatement();
+        stmt37.executeUpdate("insert ignore into product values('T_01','SASSAFRAS Women Black Solid High Neck Cropped Top','tops',599,'https://img.looksgud.com/upload/item-image/2035/17mg7/17mg7-sassafras-women-black-solid-crop-top_500x500_2.jpg','Black solid knitted crop top, has a high neck, and long sleeves')");
+
+        Statement stmt38 = con.createStatement();
+        stmt38.executeUpdate("insert ignore into product values('T_02','Carlton London Women Black Solid Victorian Crop Fitted Top','tops',764,'https://i.pinimg.com/originals/8b/21/c9/8b21c91d5b007282806bc606b3ca9e42.jpg','Black solid woven victorian crop fitted top with gathers, has a sweetheart neck, long cuffed sleeves, and button closures')");
+
+        Statement stmt39 = con.createStatement();
+        stmt39.executeUpdate("insert ignore into product values('T_03','Pannkh Women Navy Blue Printed Top','tops',519,'https://cdn.shopify.com/s/files/1/0505/7888/2746/products/5150-4_1800x1800.jpg?v=1603712647','Navy, rust orange and beige printed woven top, has a round neck, three-quarter sleeves')");
+
+        Statement stmt40 = con.createStatement();
+        stmt40.executeUpdate("insert ignore into product values('T_04','Roadster Women Yellow Checked Blouson Top','tops',769,'https://cdn.fashiola.in/L67521843/roadster-women-mustard-yellow-lace-up-solid-schiffli-embroidered-top.jpg','Yellow checked woven blouson top, has a sweetheart neck, and short sleeves')");
+
+        Statement stmt41 = con.createStatement();
+        stmt41.executeUpdate("insert ignore into product values('T_05','DOROTHY PERKINS Women Beige Solid Blouson Top','tops',2392,'https://assets.myntassets.com/h_1440,q_100,w_1080/v1/assets/images/8403369/2019/1/17/6f2d437b-1f0f-40b9-a914-ec38baca1d0f1547715754654-DOROTHY-PERKINS-Women-Tops-4271547715753122-1.jpg','Beige solid woven blouson top with gathered detail, has a round neck, long sleeves, and button closure')");
+
+        Statement stmt42 = con.createStatement();
+        stmt42.executeUpdate("insert ignore into product values('T_06','SASSAFRAS Women White Solid High-Neck Top','tops',599,'https://img.looksgud.com/upload/item-image/2276/1csg5/1csg5-clafoutis-solid-women-high-neck-white-t-shirt_500x500_0.jpg','White solid knitted regular top, has a high neck, and long sleeves')");
+
+        Statement stmt43 = con.createStatement();
+        stmt43.executeUpdate("insert ignore into product values('T_07','DressBerry Women Purple Solid Top','tops',374,'https://assets.myntassets.com/fl_progressive/h_960,q_80,w_720/v1/assets/images/2522016/2018/8/8/58f3d849-bda6-4abc-97cd-4be7dbc0a57d1533729418602-DressBerry-Women-Burgundy-Solid-Top-5071533729416542-1.jpg','Purple solid regular top, has a round neck and short sleeves')");
+
+        Statement stmt44 = con.createStatement();
+        stmt44.executeUpdate("insert ignore into product values('T_08','Os Women Blue Self Design A-Line Top','tops',879,'https://img.looksgud.com/upload/item-image/2044/17tgi/17tgi-all-about-you-women-blue-self-design-a-line-top_500x500_0.jpg','Blue self-design woven A-line top, has a round neck, and three-quarter sleeves')");
+
+        Statement stmt45 = con.createStatement();
+        stmt45.executeUpdate("insert ignore into product values('T_09','Mayra Women Black Printed Shirt Style Top','tops',398,'https://rukminim1.flixcart.com/image/714/857/j2516kw0/top/p/j/y/s-1704t09843-mayra-original-imaetjzx99ru5uah.jpeg?q=50','Black and grey printed woven shirt style top, has a shirt collar, long sleeves, button closure')");
+
+        Statement stmt46 = con.createStatement();
+        stmt46.executeUpdate("insert ignore into product values('T_10','DOROTHY PERKINS Women White Solid Top with Net Sleeves','tops',1992,'https://cdn.fashiola.in/L66725279/dorothy-perkins-women-white-solid-top-with-net-sleeves.jpg','White solid knitted regular top, has a square neck, and three-quarter net sleeves')");
+
+        Statement stmt47 = con.createStatement();
+        stmt47.executeUpdate("insert ignore into product values('T_11','Xpose Women Blue Solid Denim A-Line Top','tops',1049,'https://assets.myntassets.com/fl_progressive/h_960,q_80,w_720/v1/assets/images/9937273/2019/7/4/0dc437b1-753e-4557-9537-bd405d2928091562245775626-Xpose-Women-Blue-Chambray-Solid-A-Line-Top-651562245774236-1.jpg','Blue solid woven denim A-line top, has a round neck, sleeveless, ruffled hem')");
+
+        Statement stmt48 = con.createStatement();
+        stmt48.executeUpdate("insert ignore into product values('T_12','RHHENSO Women Red Solid Bardot Top','tops',6500,'https://cdn.shopify.com/s/files/1/1018/4207/products/3_6f0de782-83f8-4a9e-ba9c-21cffea1ff54_2000x.jpg?v=1571553325','Red solid knitted and woven bardot top, has an off-shoulder neck, and long sleeves')");
+
+        Statement stmt49 = con.createStatement();
+        stmt49.executeUpdate("insert ignore into product values('T_13','KASSUALLY Women Black Solid Peplum Top','tops',610,'https://shoprapy.com/wp-content/uploads/2020/10/aae6d5da-cee2-4fdf-99cd-b5421d86d68a1591654989641-1.jpg','Black solid knitted peplum top, has a high neck, three-quarter sleeves, and hook and eye closure')");
+
+        Statement stmt50 = con.createStatement();
+        stmt50.executeUpdate("insert ignore into product values('T_14','SASSAFRAS Women Peach-Coloured Satin Finish Solid Shirt Style Top','tops',584,'https://i2.wp.com/www.meroekchaa.com/wp-content/uploads/2018/09/11512454408561-SASSAFRAS-Women-Pink-Solid-Shirt-Style-Top-1481512454408474-3.jpg?fit=768%2C1024&ssl=1','Peach-coloured solid woven satin finish shirt style top, has a tie-up neck with sequinned detail, long sleeves, button placket')");
+
+        Statement stmt51 = con.createStatement();
+        stmt51.executeUpdate("insert ignore into product values('T_15','Veni Vidi Vici Women White Solid Fitted Top','tops',580,'https://img.looksgud.com/upload/item-image/2328/1dx03/1dx03-veni-vidi-vici-women-white-solid-fitted-top_500x500_2.jpg','White solid knitted fitted top, has a high neck, long sleeves, concealed zip closure')");
+
+        Statement stmt52 = con.createStatement();
+        stmt52.executeUpdate("insert ignore into product values('T_16','plusS Women Sea Green Self Design Peplum Top','tops',531,'https://i.pinimg.com/736x/1e/25/92/1e2592fc0903519f44c6b5193d2bc8e2.jpg','Sea Green self-design woven peplum top, has a mandarin collar, three-quarter sleeves')");
+
+        Statement stmt53 = con.createStatement();
+        stmt53.executeUpdate("insert ignore into product values('T_17','Sangria Women Green Printed High-Low Top','tops',854,'https://img.looksgud.com/upload/item-image/1759/11pjl/11pjl-sangria-women-green-printed-high-low-top_500x500_0.jpg','Green in colour, this top from Sangria boasts of floral block print all over and a clean style. Tailored from cotton, this top has a round neck and 3/4th flounce sleeves that gives a sharp, elegant look, while the golden stitch details on the front and peplum design makes it visually appealing. This top can be styled with a pair of black jeans and brown sandals to look your best.')");
+
+        Statement stmt54 = con.createStatement();
+        stmt54.executeUpdate("insert ignore into product values('T_18','SASSAFRAS Women Green Ruffled Shirt Style Top','tops',449,'https://rukminim1.flixcart.com/image/400/400/jx502vk0/top/g/a/k/l-sftops4059-sassafras-original-imafhz6s4gwybwqq.jpeg?q=90','Green solid woven shirt style top with ruffles, has a mandarin collar, long sleeves, button closure')");
+
+        Statement stmt55 = con.createStatement();
+        stmt55.executeUpdate("insert ignore into product values('T_19','Athena Women Red Solid Bardot Top','tops',734,'https://img.looksgud.com/upload/item-image/2164/1ae8i/1ae8i-rivi-women-red-solid-bardot-top_500x500_4.jpg','Red solid knitted bardot top, has an off-shoulder neck, and long sleeves')");
+
+        Statement stmt56 = con.createStatement();
+        stmt56.executeUpdate("insert ignore into product values('T_20','plusS Women Olive Green Solid A-Line Top','tops',466,'https://img.looksgud.com/upload/item-image/2167/1agkx/1agkx-label-ritu-kumar-women-olive-green-golden-self-striped_500x500_0.jpg','Olive green solid woven A-line top with crochet inserts and gather, has a tie-up neck, three-quarter sleeves')");
+
+
     }
 
     public void sign_up(Stage stage,Scene scene)

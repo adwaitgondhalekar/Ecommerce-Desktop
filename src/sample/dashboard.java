@@ -1,5 +1,8 @@
 package sample;
 
+import javafx.beans.binding.Bindings;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -28,11 +31,11 @@ public class dashboard
         String styles =
                 "-fx-font-size:25px;" +
                         "-fx-padding:10px;" +
-                        " -fx-background-color : #C6DEF1;"+
+                       // " -fx-background-color : #C6DEF1;"+
+                        " -fx-background-color : #b2c7d8;"+
                         "-fx-font-color:#FDFCDC;";
+        String hoverstyle= "-fx-background-color: transparent;";
 
-
-        //String color = ;
         Image LogoImage=new Image("https://p.kindpng.com/picc/s/450-4502425_new-stop-and-shop-logo-hd-png-download.png");
         ImageView LogoimageView=new ImageView(LogoImage);
         LogoimageView.setFitHeight(40);
@@ -44,18 +47,34 @@ public class dashboard
 //        leftBar.setPrefHeight(40);
         Menu logoitem = new Menu("",LogoimageView);
         leftBar.getMenus().add(logoitem);
-        Menu men = new Menu("Men");
-        men.getItems().addAll(new MenuItem("Shirts"), new MenuItem("Trousers"));
-        Menu women = new Menu("Women");
+        logoitem.setStyle(hoverstyle);
+        Menu men = new Menu("MEN");
+        men.setStyle(hoverstyle);
+        men.getItems().addAll(new MenuItem("SHIRTS"), new MenuItem("TROUSERS"));
+
+        Menu women = new Menu("WOMEN");
+        women.setStyle(hoverstyle);
         leftBar.setStyle(styles);
-        women.getItems().addAll(new MenuItem("Tops"), new MenuItem("Dresses"));
+        women.getItems().addAll(new MenuItem("TOPS"), new MenuItem("DRESSES"));
         leftBar.getMenus().add(men);
         leftBar.getMenus().add(women);
 
         MenuBar rightBar = new MenuBar();
-        rightBar.getMenus().addAll(new Menu("Cart"), new Menu("Sign out"));
+        Image CartImg=new Image("https://lh3.googleusercontent.com/proxy/oU4VgH1g8ByZwLhx61Qv2CwCCGW_9vLIkiAbUgu9WOyZqjldIj2tZ7OkZ4g5JdPoPzgd7gd9MLuug8QwiaFBFjt5k_D996fGHtIn");
+        ImageView CartImageView=new ImageView(CartImg);
+        CartImageView.setFitHeight(40);
+        CartImageView.setFitWidth(80);
+        CartImageView.setPreserveRatio(true);
+        Menu cartItem = new Menu("",CartImageView);
+        rightBar.getMenus().add(cartItem);
+        cartItem.setStyle(hoverstyle);
+        Menu signout = new Menu("SIGN OUT");
+        signout.setStyle(hoverstyle);
+
+        rightBar.getMenus().add(signout);
+
         rightBar.setStyle(styles);
-//        rightBar.setPrefHeight(40);
+//      rightBar.setPrefHeight(40);
         Region spacer = new Region();
         spacer.getStyleClass().add("menu-bar");
         spacer.setStyle(styles);
@@ -66,32 +85,44 @@ public class dashboard
         menubars.setPrefWidth(40);
         menubars.setStyle(styles);
 
+        ObservableList<String> options =
+                FXCollections.observableArrayList(
+                        "Price:Low to High",
+                        "Price:High to Low"
+                );
+        final ComboBox filterBox = new ComboBox(options);
+        filterBox.setValue("Filter By");
+        HBox filter = new HBox(filterBox);
+        filterBox.setTranslateX(1000);
+        //filterBox.setStyle(styles);
+        filter.setPadding(new Insets(20));
+
+
         TilePane tilePane = new TilePane();
         tilePane.setPadding(new Insets(70));
         tilePane.setVgap(20);
         tilePane.setHgap(20);
         tilePane.setPrefColumns(2);
-        //tilePane.setStyle("-fx-background-color:#c6e79d;");
-        //tilePane.setStyle("-fx-background-color:#c3b2d8;");
         tilePane.setStyle("-fx-background-color:black;");
+
 
         con=Database_Connection.getInstance().con;
         Statement stmt = con.createStatement();
         String query = "select product_name,price,product_img from product;";
         ResultSet resultSet = stmt.executeQuery(query);
-        String prod_names[]=new String[30];
-        String prod_prices[]=new String[30];
-        String prod_imgs[]=new String[30];
-        int i=0;
+        String prod_names[]=new String[70];
+        String prod_prices[]=new String[70];
+        String prod_imgs[]=new String[70];
+        int num=0;
         while(resultSet.next()) {
-            prod_names[i]=resultSet.getString("product_name");
-            prod_prices[i]=resultSet.getString("price");
-            prod_imgs[i]=resultSet.getString("product_img");
-            i++;
+            prod_names[num]=resultSet.getString("product_name");
+            prod_prices[num]=resultSet.getString("price");
+            prod_imgs[num]=resultSet.getString("product_img");
+            num++;
 
         }
-        VBox tiles[] = new VBox[50];
-        for (i = 0; i < 30; i++)
+        VBox tiles[] = new VBox[num];
+        for (int i = 0; i < num; i++)
         {
 
             Image image = new Image(prod_imgs[i]);
@@ -116,13 +147,14 @@ public class dashboard
             //Label desc = new Label("Description"+"Awesome shirt");
             //Label size = new Label("20");
             Button add_to_cart = new Button("Add to Cart");
-            add_to_cart.setStyle("-fx-background-color: #D9C6F1;-fx-border-color: black;");
+            add_to_cart.setStyle("-fx-background-color: #a29aac;-fx-border-color: black;-fx-hovered-background:white");
             add_to_cart.setTranslateY(20);
 
             tiles[i] = new VBox(10,hbxImg,prod_name,price,add_to_cart);
             //tiles[i].setAlignment(Pos.CENTER);
             tiles[i].setStyle("-fx-border-color: black;-fx-background-color:#e8dcf6;");
-            //
+
+
             tiles[i].setPrefWidth(200);
             tiles[i].setPrefHeight(250);
             tiles[i].setPadding(new Insets(10,10,50,10));
@@ -134,6 +166,8 @@ public class dashboard
         vbox.setAlignment(Pos.TOP_CENTER);
         //vbox.setStyle("-fx-background-color: blue;");
         vbox.getChildren().add(menubars);
+        vbox.getChildren().add(filter);
+
         vbox.getChildren().add(tilePane);
 
         StackPane stack = new StackPane();
