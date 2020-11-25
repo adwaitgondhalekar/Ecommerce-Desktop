@@ -81,7 +81,7 @@ public class dashboard
         leftBar.getMenus().add(women);
 
         MenuBar rightBar = new MenuBar();
-        Image CartImg=new Image("https://lh3.googleusercontent.com/proxy/XMhUXtS640rleDKiQAHpOfM2d4rFA7j_iZobR1P5kQjwRM8yYx-vIX7ubG9he3uD-Z-tcWh17LcVL5LV5-TQYWQARxLu7lw1cDJp");
+        Image CartImg=new Image("http://www.pngmart.com/files/7/Cart-PNG-Clipart.png");
         ImageView CartImageView=new ImageView(CartImg);
         CartImageView.setFitHeight(40);
         CartImageView.setFitWidth(80);
@@ -110,18 +110,30 @@ public class dashboard
         menubars.setPrefWidth(40);
         menubars.setStyle(styles);
 
-        ObservableList<String> options =
-                FXCollections.observableArrayList(
-                        "Price:Low to High",
-                        "Price:High to Low"
-                );
-        final ComboBox filterBox = new ComboBox(options);
-        filterBox.setValue("Filter By");
-        HBox filter = new HBox(filterBox);
-        filterBox.setTranslateX(1100);
+//        ObservableList<String> options =
+//                FXCollections.observableArrayList(
+//                        "Price:Low to High",
+//                        "Price:High to Low"
+//                );
+//
+//        final ComboBox filterBox = new ComboBox(options);
+//        filterBox.setValue("Filter By");
+//        HBox filter = new HBox(filterBox);
+//        filterBox.setTranslateX(1100);
+//        filter.setStyle(" -fx-background-color : black;");
+//        filterBox.setStyle(filterstyle);
+//        filter.setPadding(new Insets(20));
+
+        MenuButton filterButton = new MenuButton("Filter By");
+        MenuItem HtoL=new MenuItem("High to Low");
+        MenuItem LtoH=new MenuItem("Low to High");
+        filterButton.getItems().addAll(HtoL,LtoH);
+        HBox filter = new HBox(filterButton);
+        filterButton.setTranslateX(1100);
         filter.setStyle(" -fx-background-color : black;");
-        filterBox.setStyle(filterstyle);
+        filterButton.setStyle(filterstyle);
         filter.setPadding(new Insets(20));
+
 
         con=Database_Connection.getInstance().con;
         Statement stmt = con.createStatement();
@@ -138,6 +150,7 @@ public class dashboard
             num++;
 
         }
+
 
         Statement Shirtstmt = con.createStatement();
         String Shirtquery = "select product_name,price,product_img from product where product_category='shirts';";
@@ -156,7 +169,7 @@ public class dashboard
         shirts.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                //display_products(primaryStage,Shirt_names,Shirt_prices,Shirt_imgs, finalShirtnum,menubars,filter);
+                display_products(primaryStage,Shirt_names,Shirt_prices,Shirt_imgs, finalShirtnum,menubars,filter);
             }
         });
 
@@ -181,6 +194,98 @@ public class dashboard
 
             }
         });
+
+        Statement Tpstmt = con.createStatement();
+        String Tpquery = "select product_name,price,product_img from product where product_category='tops';";
+        ResultSet TpresultSet = Tpstmt.executeQuery(Tpquery);
+        String Tp_names[]=new String[70];
+        String Tp_prices[]=new String[70];
+        String Tp_imgs[]=new String[70];
+        int Tpnum=0;
+        while(TpresultSet.next()) {
+            Tp_names[Tpnum]=TpresultSet.getString("product_name");
+            Tp_prices[Tpnum]=TpresultSet.getString("price");
+            Tp_imgs[Tpnum]=TpresultSet.getString("product_img");
+            Tpnum++;
+        }
+        int finalTpnum = Tpnum;
+        tops.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle( ActionEvent actionEvent) {
+                display_products(primaryStage,Tp_names,Tp_prices,Tp_imgs, finalTpnum,menubars,filter);
+
+            }
+        });
+
+        Statement Drstmt = con.createStatement();
+        String Drquery = "select product_name,price,product_img from product where product_category='dresses';";
+        ResultSet DrresultSet = Drstmt.executeQuery(Drquery);
+        String Dr_names[]=new String[70];
+        String Dr_prices[]=new String[70];
+        String Dr_imgs[]=new String[70];
+        int Drnum=0;
+        while(DrresultSet.next()) {
+            Dr_names[Drnum]=DrresultSet.getString("product_name");
+            Dr_prices[Drnum]=DrresultSet.getString("price");
+            Dr_imgs[Drnum]=DrresultSet.getString("product_img");
+            Drnum++;
+        }
+        int finalDrnum = Drnum;
+        dresses.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle( ActionEvent actionEvent) {
+                display_products(primaryStage,Dr_names,Dr_prices,Dr_imgs, finalDrnum,menubars,filter);
+
+            }
+        });
+
+        Statement HtoLstmt = con.createStatement();
+        String HtoLquery = "select product_name,price,product_img from product order by price DESC;";
+        ResultSet HtoLresultSet = HtoLstmt.executeQuery(HtoLquery);
+        String HtoL_names[]=new String[70];
+        String HtoL_prices[]=new String[70];
+        String HtoL_imgs[]=new String[70];
+        int HtoLnum=0;
+        while(HtoLresultSet.next()) {
+            HtoL_names[HtoLnum]=HtoLresultSet.getString("product_name");
+            HtoL_prices[HtoLnum]=HtoLresultSet.getString("price");
+            HtoL_imgs[HtoLnum]=HtoLresultSet.getString("product_img");
+            HtoLnum++;
+        }
+        int finalHtoLnum = HtoLnum;
+        HtoL.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle( ActionEvent actionEvent) {
+                display_products(primaryStage,HtoL_names,HtoL_prices,HtoL_imgs, finalHtoLnum,menubars,filter);
+
+            }
+        });
+
+        Statement LtoHstmt = con.createStatement();
+        String LtoHquery = "select product_name,price,product_img from product order by price;";
+        ResultSet LtoHresultSet = LtoHstmt.executeQuery(LtoHquery);
+        String LtoH_names[]=new String[70];
+        String LtoH_prices[]=new String[70];
+        String LtoH_imgs[]=new String[70];
+        int LtoHnum=0;
+        while(LtoHresultSet.next()) {
+            LtoH_names[LtoHnum]=LtoHresultSet.getString("product_name");
+            LtoH_prices[LtoHnum]=LtoHresultSet.getString("price");
+            LtoH_imgs[LtoHnum]=LtoHresultSet.getString("product_img");
+            LtoHnum++;
+        }
+        int finalLtoHnum = LtoHnum;
+        LtoH.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle( ActionEvent actionEvent) {
+                display_products(primaryStage,LtoH_names,LtoH_prices,LtoH_imgs, finalLtoHnum,menubars,filter);
+
+            }
+        });
+
+
+
+
 
         display_products(primaryStage,prod_names,prod_prices,prod_imgs,num,menubars,filter);
 
