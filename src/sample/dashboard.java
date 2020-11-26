@@ -27,9 +27,8 @@ public class dashboard
     static Connection con;
 
 
-    public static void star(Stage primaryStage,Scene scene, String loginUsername) throws Exception
+    public static void star(Stage primaryStage,Scene scene) throws Exception
     {
-
         String styles =
                 "-fx-font-size:25px;" +
                         "-fx-padding:10px;" +
@@ -93,7 +92,7 @@ public class dashboard
             @Override
             public void handle(ActionEvent actionEvent) {
                 try {
-                    cart(primaryStage,scene);
+                    cart(primaryStage);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -136,17 +135,18 @@ public class dashboard
         Statement stmt = con.createStatement();
         String query = "select product_name,price,product_img from product ;";
         ResultSet resultSet = stmt.executeQuery(query);
-        String prod_names[]=new String[70];
-        String prod_prices[]=new String[70];
-        String prod_imgs[]=new String[70];
+        //String prod_ids[]=new String[90];
+        String prod_names[]=new String[90];
+        String prod_prices[]=new String[90];
+        String prod_imgs[]=new String[90];
         int num=0;
         while(resultSet.next())
         {
+            //prod_ids[num]=resultSet.getString("product_id");
             prod_names[num]=resultSet.getString("product_name");
             prod_prices[num]=resultSet.getString("price");
             prod_imgs[num]=resultSet.getString("product_img");
             num++;
-
         }
 
 
@@ -422,6 +422,13 @@ public class dashboard
                     if(count[0]==0)
                            count[0]++;
                     quantity.setText(Integer.toString(count[0]));
+
+                    try {
+                        cart(primaryStage);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
                 }
             });
 

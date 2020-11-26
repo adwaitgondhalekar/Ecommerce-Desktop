@@ -68,7 +68,6 @@ public class Main extends Application
 
         usernametext.setPrefWidth(200);
 
-
         username_error_login.setTranslateX(125);
 
         hBox.getChildren().addAll(username, usernametext);
@@ -76,9 +75,7 @@ public class Main extends Application
         Label password = new Label("Password  :");
         password.setFont(Font.font("Tahoma", FontWeight.NORMAL, 16));
 
-
         passwordField.setPrefWidth(200);
-
 
         password_error_login.setTranslateX(125);
 
@@ -214,6 +211,7 @@ public class Main extends Application
         });
         if(login_fail==0) {
 
+
             String login_username = usernametext.getText().strip();
             String login_password = passwordField.getText().strip();
 
@@ -236,7 +234,9 @@ public class Main extends Application
                 if (retrieved_username.equals(login_username) && retrieved_password.equals(login_password))
                 {
                     System.out.println(login_username);
-                    dashboard.star(stage,scene,login_username);
+
+                    dashboard.star(stage,scene);
+                   // Cart.cart(stage,scene);
                 }
                 else {
                     password_error_login.setText("Incorrect Password!");
@@ -278,8 +278,8 @@ public class Main extends Application
         Statement stmt1 = con.createStatement();
         stmt1.executeUpdate("create table if not exists user(username varchar(20) ,email varchar(30),password varchar(20),contact_no varchar(10),primary key(username));");
 
-        Statement stm2=con.createStatement();
-        stm2.executeUpdate("create table if not exists cart(cart_id varchar(20),primary key(cart_id));");
+//        Statement stm2=con.createStatement();
+       //stm2.executeUpdate("create table if not exists cart(cart_id varchar(20),primary key(cart_id));");
 
         Statement stmt3 =con.createStatement();
         stmt3.executeUpdate("create table if not exists orders(order_id varchar(20),username varchar(20),tot_amt float,product_qty integer, primary key(order_id),foreign key(username) references user(username));");
@@ -291,7 +291,7 @@ public class Main extends Application
         stmt5.executeUpdate("create table if not exists contains(product_id varchar(20),order_id varchar(20),foreign key(product_id) references product(product_id),foreign key(order_id) references orders(order_id));");
 
         Statement stmt6 = con.createStatement();
-        stmt6.executeUpdate("create table if not exists has(cart_id varchar(20),product_id varchar(20),foreign key(cart_id) references cart(cart_id),foreign key(product_id) references product(product_id));");
+        stmt6.executeUpdate("create table if not exists in_cart(username varchar(20),product_id varchar(20),foreign key(username) references user(username),foreign key(product_id) references product(product_id));");
 
         Statement stmt7 = con.createStatement();
         stmt7.executeUpdate("insert ignore into product values('D_01','SASSAFRAS Sea Wash Peterpan Collar Pleated Dress','dresses',799,'https://shoprapy.com/wp-content/uploads/2020/03/bd8f2ff9-186b-4983-b9b6-88654f2d13661564380201384-SASSAFRAS-Women-Blue-A-Line-Dress-9861564380199640-1.jpg','Periwinkle blue Fit n flared flowy silhouette')");
@@ -840,18 +840,7 @@ public class Main extends Application
 
                     redirect.setText("");
                 }
-//                Statement CartStmt = null;
-//                try {
-//                    CartStmt = con.createStatement();
-//                } catch (SQLException throwables) {
-//                    throwables.printStackTrace();
-//                }
-//                String CartIdQuery="insert ignore into cart values(C_"+username+")";
-//                try {
-//                    CartStmt.executeUpdate(CartIdQuery);
-//                } catch (SQLException throwables) {
-//                    throwables.printStackTrace();
-//                }
+
 
 
             }
@@ -870,14 +859,20 @@ public class Main extends Application
         String contact = entered_contact.getText().strip();
 
         Statement stmt =con.createStatement();
-
         String query="insert into user values("+"'"+username+"','"+email+"',"+"'"+password+"',"+contact+");";
+        stmt.executeUpdate(query);
+
+//        Statement CartStmt = con.createStatement();
+//        String CartId="C_"+username;
+//        String CartIdQuery="insert into cart values("+"'"+CartId+"'"+");";
+//        //System.out.print(CartIdQuery);
+//        CartStmt.executeUpdate(CartIdQuery);
 
         //System.out.print(username+" "+contact+" "+email+" "+password);
 
         //System.out.print(query);
 
-        stmt.executeUpdate(query);
+
 
         //Thread.sleep(2000);
 
