@@ -236,7 +236,7 @@ public class Main extends Application
                 if (retrieved_username.equals(login_username) && retrieved_password.equals(login_password))
                 {
                     System.out.println(login_username);
-                    dashboard.star(stage,scene);
+                    dashboard.star(stage,scene,login_username);
                 }
                 else {
                     password_error_login.setText("Incorrect Password!");
@@ -273,14 +273,12 @@ public class Main extends Application
 
     public void initialization_tables() throws SQLException
     {
-         con=Database_Connection.getInstance().con;
+        con=Database_Connection.getInstance().con;
 
         Statement stmt1 = con.createStatement();
-
         stmt1.executeUpdate("create table if not exists user(username varchar(20) ,email varchar(30),password varchar(20),contact_no varchar(10),primary key(username));");
 
         Statement stm2=con.createStatement();
-
         stm2.executeUpdate("create table if not exists cart(cart_id varchar(20),primary key(cart_id));");
 
         Statement stmt3 =con.createStatement();
@@ -842,11 +840,18 @@ public class Main extends Application
 
                     redirect.setText("");
                 }
-
-
-
-
-
+//                Statement CartStmt = null;
+//                try {
+//                    CartStmt = con.createStatement();
+//                } catch (SQLException throwables) {
+//                    throwables.printStackTrace();
+//                }
+//                String CartIdQuery="insert ignore into cart values(C_"+username+")";
+//                try {
+//                    CartStmt.executeUpdate(CartIdQuery);
+//                } catch (SQLException throwables) {
+//                    throwables.printStackTrace();
+//                }
 
 
             }

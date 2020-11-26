@@ -12,10 +12,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
+import javafx.scene.text.*;
 import javafx.stage.Stage;
 
 import java.sql.Connection;
@@ -23,12 +20,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import static sample.Cart.cart;
+
 public class dashboard
 {
     static Connection con;
 
 
-    public static void star(Stage primaryStage,Scene scene) throws Exception
+    public static void star(Stage primaryStage,Scene scene, String loginUsername) throws Exception
     {
 
         String styles =
@@ -90,6 +89,17 @@ public class dashboard
         rightBar.getMenus().add(cartItem);
         cartItem.setStyle(hoverstyle);
 
+        cartItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                try {
+                    cart(primaryStage,scene);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
         Menu account = new Menu("ACCOUNT");
         account.setStyle(hoverstyle);
         MenuItem orders=new MenuItem("ORDERS");
@@ -111,7 +121,7 @@ public class dashboard
         menubars.setStyle(styles);
 
 
-        MenuButton filterButton = new MenuButton("Filter By");
+        MenuButton filterButton = new MenuButton("Filter By Price");
         MenuItem HtoL=new MenuItem("High to Low");
         MenuItem LtoH=new MenuItem("Low to High");
         filterButton.getItems().addAll(HtoL,LtoH);
@@ -130,7 +140,8 @@ public class dashboard
         String prod_prices[]=new String[70];
         String prod_imgs[]=new String[70];
         int num=0;
-        while(resultSet.next()) {
+        while(resultSet.next())
+        {
             prod_names[num]=resultSet.getString("product_name");
             prod_prices[num]=resultSet.getString("price");
             prod_imgs[num]=resultSet.getString("product_img");
@@ -394,11 +405,64 @@ public class dashboard
             price.setAlignment(Pos.CENTER_LEFT);
             price.setTranslateY(20);
             price.setFont(Font.font(13));
-            Button add_to_cart = new Button("Add to Cart");
-            add_to_cart.setStyle("-fx-background-color: #a29aac;-fx-border-color: black;-fx-hovered-background:white");
-            add_to_cart.setTranslateY(20);
 
-            tiles[i] = new VBox(10,hbxImg,prod_name,price,add_to_cart);
+            HBox cartFunctions= new HBox();
+
+            Button add_to_cart = new Button("Add to Cart");
+            add_to_cart.setStyle("-fx-background-color: #b38de3;-fx-border-color: black;-fx-hovered-background:white");
+            add_to_cart.setTranslateY(20);
+            Label quantity= new Label();
+            final int[] count = {0};
+
+            add_to_cart.setOnAction(new EventHandler<ActionEvent>()
+            {
+                @Override
+                public void handle(ActionEvent actionEvent)
+                {
+                    if(count[0]==0)
+                           count[0]++;
+                    quantity.setText(Integer.toString(count[0]));
+                }
+            });
+
+            HBox prodCount=new HBox();
+            Button addProd=new Button("+");
+            addProd.setStyle("-fx-border-color:grey;-fx-border-style: solid solid solid none;");
+            Button reduceProd=new Button("- ");
+            reduceProd.setTextAlignment(TextAlignment.CENTER);
+            reduceProd.setStyle("-fx-border-color:grey;-fx-border-style: solid none solid solid;-fx-padding:5px 5px 3px 12px;");
+
+            addProd.setOnAction((new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    count[0]++;
+                    quantity.setText(Integer.toString(count[0]));
+                }
+            }));
+            reduceProd.setOnAction((new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    if(count[0]!=0)
+                    {
+                        count[0]--;
+                        quantity.setText(Integer.toString(count[0]));
+                    }
+                    }
+            }));
+            int labelCount=count[0];
+
+
+            quantity.setText(Integer.toString(labelCount));
+            quantity.setStyle("-fx-border-color:grey;-fx-border-style: solid none solid none;-fx-padding:3px 3px 5px 3px;");
+            quantity.setAlignment(Pos.CENTER);
+
+            prodCount.getChildren().addAll(reduceProd,quantity,addProd);
+            prodCount.setTranslateX(65);
+            prodCount.setTranslateY(20);
+
+            cartFunctions.getChildren().addAll(add_to_cart,prodCount);
+
+            tiles[i] = new VBox(10,hbxImg,prod_name,price,cartFunctions);
             //tiles[i].setAlignment(Pos.CENTER);
             tiles[i].setStyle("-fx-border-color: black;-fx-background-color:#e8dcf6;");
             tiles[i].setPrefWidth(200);
