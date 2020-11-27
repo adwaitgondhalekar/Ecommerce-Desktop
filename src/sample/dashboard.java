@@ -15,10 +15,7 @@ import javafx.scene.layout.*;
 import javafx.scene.text.*;
 import javafx.stage.Stage;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 import static sample.Cart.cart;
 
@@ -27,7 +24,7 @@ public class dashboard
     static Connection con;
 
 
-    public static void star(Stage primaryStage,Scene scene) throws Exception
+    public static void star(Stage primaryStage,Scene scene,String username) throws Exception
     {
         String styles =
                 "-fx-font-size:25px;" +
@@ -135,7 +132,9 @@ public class dashboard
         Statement stmt = con.createStatement();
         String query = "select product_name,price,product_img from product ;";
         ResultSet resultSet = stmt.executeQuery(query);
+
         //String prod_ids[]=new String[90];
+
         String prod_names[]=new String[90];
         String prod_prices[]=new String[90];
         String prod_imgs[]=new String[90];
@@ -143,6 +142,7 @@ public class dashboard
         while(resultSet.next())
         {
             //prod_ids[num]=resultSet.getString("product_id");
+
             prod_names[num]=resultSet.getString("product_name");
             prod_prices[num]=resultSet.getString("price");
             prod_imgs[num]=resultSet.getString("product_img");
@@ -167,14 +167,14 @@ public class dashboard
         shirts.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                display_products(primaryStage,Shirt_names,Shirt_prices,Shirt_imgs, finalShirtnum,menubars,filter);
+                display_products(primaryStage,Shirt_names,Shirt_prices,Shirt_imgs, finalShirtnum,menubars,filter,username);
 
                 HtoL.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent actionEvent) {
                         String HtoLquery = "select product_name,price,product_img from product where product_category='shirts' order by price DESC ;";
                         try {
-                            HightoLowFilter(primaryStage,menubars,filter,HtoLquery);
+                            HightoLowFilter(primaryStage,menubars,filter,HtoLquery,username);
                         } catch (SQLException throwables) {
                             throwables.printStackTrace();
                         }
@@ -186,7 +186,7 @@ public class dashboard
                     public void handle(ActionEvent actionEvent) {
                         String LtoHquery = "select product_name,price,product_img from product where product_category='shirts' order by price ;";
                         try {
-                            LowToHighFilter(primaryStage,menubars,filter,LtoHquery);
+                            LowToHighFilter(primaryStage,menubars,filter,LtoHquery,username);
                         } catch (SQLException throwables) {
                             throwables.printStackTrace();
                         }
@@ -216,14 +216,14 @@ public class dashboard
         trousers.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle( ActionEvent actionEvent) {
-                display_products(primaryStage,Tr_names,Tr_prices,Tr_imgs, finalTrnum,menubars,filter);
+                display_products(primaryStage,Tr_names,Tr_prices,Tr_imgs, finalTrnum,menubars,filter,username);
 
                 HtoL.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent actionEvent) {
                         String HtoLquery = "select product_name,price,product_img from product where product_category='trousers' order by price DESC ;";
                         try {
-                            HightoLowFilter(primaryStage,menubars,filter,HtoLquery);
+                            HightoLowFilter(primaryStage,menubars,filter,HtoLquery,username);
                         } catch (SQLException throwables) {
                             throwables.printStackTrace();
                         }
@@ -235,7 +235,7 @@ public class dashboard
                     public void handle(ActionEvent actionEvent) {
                         String LtoHquery = "select product_name,price,product_img from product where product_category='trousers' order by price ;";
                         try {
-                            LowToHighFilter(primaryStage,menubars,filter,LtoHquery);
+                            LowToHighFilter(primaryStage,menubars,filter,LtoHquery,username);
                         } catch (SQLException throwables) {
                             throwables.printStackTrace();
                         }
@@ -262,13 +262,13 @@ public class dashboard
         tops.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle( ActionEvent actionEvent) {
-                display_products(primaryStage,Tp_names,Tp_prices,Tp_imgs, finalTpnum,menubars,filter);
+                display_products(primaryStage,Tp_names,Tp_prices,Tp_imgs, finalTpnum,menubars,filter,username);
                 HtoL.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent actionEvent) {
                         String HtoLquery = "select product_name,price,product_img from product where product_category='tops' order by price DESC ;";
                         try {
-                            HightoLowFilter(primaryStage,menubars,filter,HtoLquery);
+                            HightoLowFilter(primaryStage,menubars,filter,HtoLquery,username);
                         } catch (SQLException throwables) {
                             throwables.printStackTrace();
                         }
@@ -280,7 +280,7 @@ public class dashboard
                     public void handle(ActionEvent actionEvent) {
                         String LtoHquery = "select product_name,price,product_img from product where product_category='tops' order by price ;";
                         try {
-                            LowToHighFilter(primaryStage,menubars,filter,LtoHquery);
+                            LowToHighFilter(primaryStage,menubars,filter,LtoHquery,username);
                         } catch (SQLException throwables) {
                             throwables.printStackTrace();
                         }
@@ -309,13 +309,13 @@ public class dashboard
         dresses.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle( ActionEvent actionEvent) {
-                display_products(primaryStage,Dr_names,Dr_prices,Dr_imgs, finalDrnum,menubars,filter);
+                display_products(primaryStage,Dr_names,Dr_prices,Dr_imgs, finalDrnum,menubars,filter,username);
                 HtoL.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent actionEvent) {
                         String HtoLquery = "select product_name,price,product_img from product where product_category='dresses' order by price DESC ;";
                         try {
-                            HightoLowFilter(primaryStage,menubars,filter,HtoLquery);
+                            HightoLowFilter(primaryStage,menubars,filter,HtoLquery,username);
                         } catch (SQLException throwables) {
                             throwables.printStackTrace();
                         }
@@ -327,7 +327,7 @@ public class dashboard
                     public void handle(ActionEvent actionEvent) {
                         String LtoHquery = "select product_name,price,product_img from product where product_category='dresses' order by price ;";
                         try {
-                            LowToHighFilter(primaryStage,menubars,filter,LtoHquery);
+                            LowToHighFilter(primaryStage,menubars,filter,LtoHquery,username);
                         } catch (SQLException throwables) {
                             throwables.printStackTrace();
                         }
@@ -346,7 +346,7 @@ public class dashboard
             public void handle(ActionEvent actionEvent) {
                 try {
                     String HtoLquery = "select product_name,price,product_img from product order by price DESC;";
-                    HightoLowFilter(primaryStage,menubars,filter,HtoLquery);
+                    HightoLowFilter(primaryStage,menubars,filter,HtoLquery,username);
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
@@ -358,7 +358,7 @@ public class dashboard
             public void handle( ActionEvent actionEvent) {
                 try {
                     String LtoHquery = "select product_name,price,product_img from product order by price;";
-                    LowToHighFilter(primaryStage,menubars,filter,LtoHquery);
+                    LowToHighFilter(primaryStage,menubars,filter,LtoHquery,username);
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
                 }
@@ -370,10 +370,10 @@ public class dashboard
 
 
 
-        display_products(primaryStage,prod_names,prod_prices,prod_imgs,num,menubars,filter);
+        display_products(primaryStage,prod_names,prod_prices,prod_imgs,num,menubars,filter,username);
 
     }
-    public static void display_products(Stage primaryStage, String prod_names[], String prod_prices[], String prod_imgs[], int pcount,HBox menubars,HBox filter){
+    public static void display_products(Stage primaryStage, String prod_names[], String prod_prices[], String prod_imgs[], int pcount,HBox menubars,HBox filter,String username){
 
         TilePane tilePane = new TilePane();
         tilePane.setPadding(new Insets(70));
@@ -383,8 +383,13 @@ public class dashboard
         tilePane.setStyle("-fx-background-color:black;");
 
         VBox tiles[] = new VBox[pcount];
+        Button add_to_cart_button[] = new Button[pcount];
+        //final int[] lastClickedIndex = {-1};
+        final int[] lastClickedIndex = {-1};
+
         for (int i = 0; i <pcount; i++)
         {
+            final int buttonInd = i;
 
             Image image = new Image(prod_imgs[i]);
             ImageView imageView = new ImageView();
@@ -406,31 +411,58 @@ public class dashboard
             price.setTranslateY(20);
             price.setFont(Font.font(13));
 
-            HBox cartFunctions= new HBox();
+            HBox cartFunctions= new HBox(20);
 
-            Button add_to_cart = new Button("Add to Cart");
-            add_to_cart.setStyle("-fx-background-color: #b38de3;-fx-border-color: black;-fx-hovered-background:white");
-            add_to_cart.setTranslateY(20);
+            add_to_cart_button[i] = new Button("Add to Cart");
+            //add_to_cart_button[i].setText("Add to cart");
+
+            add_to_cart_button[i].setStyle("-fx-background-color: #b38de3;-fx-border-color: black;-fx-hovered-background:white");
+            add_to_cart_button[i].setTranslateY(20);
             Label quantity= new Label();
             final int[] count = {0};
 
-            add_to_cart.setOnAction(new EventHandler<ActionEvent>()
-            {
-                @Override
-                public void handle(ActionEvent actionEvent)
+//            add_to_cart_button[i].setOnAction(new EventHandler<ActionEvent>()
+//            {
+//                @Override
+//                public void handle(ActionEvent actionEvent)
+//                {
+//                    if(count[0]==0)
+//                           count[0]++;
+//                    quantity.setText(Integer.toString(count[0]));
+//
+//                    try {
+//                        cart(primaryStage);
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//
+//                }
+//            });
+            int finalI = i;
+
+
+            add_to_cart_button[i].setOnAction(actionEvent ->{
+                //lastClickedIndex[0] =buttonInd;
+                //System.out.print("Button pressed "+((Button)actionEvent.getSource()).getText()+ lastClickedIndex[0]);
+                //System.out.print("Button pressed "+((Button)actionEvent.getSource()).getText()+ finalI);
+
+                try {
+                    Statement prodIdstmt = con.createStatement();
+                    String prodIdquery = "select product_id from product where product_name='"+ prod_names[finalI]+"';";
+                    ResultSet prodIdresultSet = prodIdstmt.executeQuery(prodIdquery);
+                    String product_id;
+                    prodIdresultSet.next();
+                    product_id=prodIdresultSet.getString("product_id");
+                    Statement Cartstmt = con.createStatement();
+                    Cartstmt.executeUpdate("insert ignore into in_cart values('"+username+"','"+product_id+"');");
+
+
+                } catch (SQLException throwables)
                 {
-                    if(count[0]==0)
-                           count[0]++;
-                    quantity.setText(Integer.toString(count[0]));
-
-                    try {
-                        cart(primaryStage);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
+                    throwables.printStackTrace();
                 }
-            });
+
+            } );
 
             HBox prodCount=new HBox();
             Button addProd=new Button("+");
@@ -464,10 +496,10 @@ public class dashboard
             quantity.setAlignment(Pos.CENTER);
 
             prodCount.getChildren().addAll(reduceProd,quantity,addProd);
-            prodCount.setTranslateX(65);
+            //prodCount.setTranslateX(65);
             prodCount.setTranslateY(20);
 
-            cartFunctions.getChildren().addAll(add_to_cart,prodCount);
+            cartFunctions.getChildren().addAll(add_to_cart_button[i],prodCount);
 
             tiles[i] = new VBox(10,hbxImg,prod_name,price,cartFunctions);
             //tiles[i].setAlignment(Pos.CENTER);
@@ -496,7 +528,7 @@ public class dashboard
         primaryStage.setFullScreen(true);
         primaryStage.show();
     }
-    public  static void HightoLowFilter(Stage primaryStage,HBox menubars,HBox filter,String filter_query) throws SQLException {
+    public  static void HightoLowFilter(Stage primaryStage,HBox menubars,HBox filter,String filter_query,String username) throws SQLException {
         Statement HtoLstmt = con.createStatement();
         String HtoLquery= filter_query;
         ResultSet HtoLresultSet = HtoLstmt.executeQuery(HtoLquery);
@@ -511,9 +543,9 @@ public class dashboard
             HtoLnum++;
         }
         int finalHtoLnum = HtoLnum;
-        display_products(primaryStage,HtoL_names,HtoL_prices,HtoL_imgs, finalHtoLnum,menubars,filter);
+        display_products(primaryStage,HtoL_names,HtoL_prices,HtoL_imgs, finalHtoLnum,menubars,filter,username);
     }
-    public  static void LowToHighFilter(Stage primaryStage,HBox menubars,HBox filter,String filter_query) throws SQLException{
+    public  static void LowToHighFilter(Stage primaryStage,HBox menubars,HBox filter,String filter_query,String username) throws SQLException{
         Statement LtoHstmt = con.createStatement();
         String LtoHquery = filter_query;
         ResultSet LtoHresultSet = LtoHstmt.executeQuery(LtoHquery);
@@ -528,7 +560,7 @@ public class dashboard
             LtoHnum++;
         }
         int finalLtoHnum = LtoHnum;
-        display_products(primaryStage,LtoH_names,LtoH_prices,LtoH_imgs, finalLtoHnum,menubars,filter);
+        display_products(primaryStage,LtoH_names,LtoH_prices,LtoH_imgs, finalLtoHnum,menubars,filter,username);
 
         }
 

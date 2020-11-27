@@ -235,7 +235,7 @@ public class Main extends Application
                 {
                     System.out.println(login_username);
 
-                    dashboard.star(stage,scene);
+                    dashboard.star(stage,scene,login_username);
                    // Cart.cart(stage,scene);
                 }
                 else {
@@ -279,7 +279,7 @@ public class Main extends Application
         stmt1.executeUpdate("create table if not exists user(username varchar(20) ,email varchar(30),password varchar(20),contact_no varchar(10),primary key(username));");
 
 //        Statement stm2=con.createStatement();
-       //stm2.executeUpdate("create table if not exists cart(cart_id varchar(20),primary key(cart_id));");
+//        stm2.executeUpdate("create table if not exists cart(cart_id varchar(20),primary key(cart_id));");
 
         Statement stmt3 =con.createStatement();
         stmt3.executeUpdate("create table if not exists orders(order_id varchar(20),username varchar(20),tot_amt float,product_qty integer, primary key(order_id),foreign key(username) references user(username));");
@@ -861,20 +861,6 @@ public class Main extends Application
         Statement stmt =con.createStatement();
         String query="insert into user values("+"'"+username+"','"+email+"',"+"'"+password+"',"+contact+");";
         stmt.executeUpdate(query);
-
-//        Statement CartStmt = con.createStatement();
-//        String CartId="C_"+username;
-//        String CartIdQuery="insert into cart values("+"'"+CartId+"'"+");";
-//        //System.out.print(CartIdQuery);
-//        CartStmt.executeUpdate(CartIdQuery);
-
-        //System.out.print(username+" "+contact+" "+email+" "+password);
-
-        //System.out.print(query);
-
-
-
-        //Thread.sleep(2000);
 
         signup_result.setText("Sign Up Successful!");
         signup_result.setFont(Font.font("Tahoma",FontWeight.NORMAL,13));
