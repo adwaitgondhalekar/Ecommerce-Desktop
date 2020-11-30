@@ -24,9 +24,13 @@ public class dashboard
 {
     static Connection con;
 
+    static String usern;
+    static String order_id;
+
 
     public static void star(Stage primaryStage,Scene scene,String username) throws Exception
     {
+        usern=username;
         String styles =
                 "-fx-font-size:25px;" +
                         "-fx-padding:10px;" +
@@ -460,6 +464,11 @@ public class dashboard
 
                 }
 
+                try {
+                    place_order();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
 
 
             } );
@@ -563,5 +572,126 @@ public class dashboard
         display_products(primaryStage,LtoH_names,LtoH_prices,LtoH_imgs, finalLtoHnum,menubars,filter,username);
 
         }
+    public static void place_order() throws SQLException
+    {
+        Statement stmt=con.createStatement();
+        String get_products = "select product_id,count(*) as qty from in_cart group by product_id";
+        ResultSet prod_list = stmt.executeQuery(get_products);
+        int count=0;
+
+        while(prod_list.next())
+        {
+            count+=1;
+        }
+        System.out.println(count);
+        String[] product_id = new String[count];
+        int[] qty =new int[count];
+
+        int pos=0;
+
+        ResultSet prod_list1 = stmt.executeQuery(get_products);
+
+        while (prod_list1.next())
+        {
+
+            String prod_id = prod_list1.getString("product_id");
+            int quant = prod_list1.getInt("qty");
+
+            product_id[pos]=prod_id;
+            qty[pos]=quant;
+
+            System.out.println(prod_id);
+            System.out.println(quant);
+
+            pos+=1;
+        }
+
+
+
+        Statement statement = con.createStatement();
+        String find_order = "select order_id from orders where order_id regexp '^O_"+usern+"_';";
+
+        ResultSet resultSet = statement.executeQuery(find_order);
+        int order_no=1;
+
+        while (resultSet.next())
+        {
+            String orderid = resultSet.getString("order_id");
+            order_no+=1;
+
+        }
+        String s_order_no=Integer.toString(order_no);
+
+        String f_order_id = "O_"+usern+"_"+s_order_no;
+
+        Statement statement1 = con.createStatement();
+
+        float total_amt=0;
+        int total_prod=0;
+
+        for(int i=0;i<product_id.length;i++)
+        {
+            String query = "select price from product where product_id='"+product_id[i]+"';";
+
+            ResultSet resultSet1=statement1.executeQuery(query);
+
+            float price=0;
+            resultSet1.next();
+
+            price = resultSet1.getFloat("price");
+
+            price = price*qty[i];
+            total_amt+=price;
+
+        }
+        for(int i=0;i<qty.length;i++)
+        {
+            total_prod+=qty[i];
+        }
+
+        Statement ins_order = con.createStatement();
+
+        String ins_query = "insert into orders values('"+f_order_id+"','"+usern+"',"+total_amt+","+total_prod+");";
+
+        ins_order.execute(ins_query);
+
+        for(int i=0;i<qty.length;i++)
+        {
+            String contains_query = "insert into contains values('"+product_id[i]+"','"+f_order_id+"');";
+
+            Statement statement2 = con.createStatement();
+
+            statement2.execute(contains_query);
+        }
+
+
+        for(int i=0;i<qty.length;i++)
+        {
+            for(int j=0;j<qty[i];j++)
+            {
+                Statement statement2 = con.createStatement();
+                String q = "delete from in_cart where username='" + usern + "' and product_id='" + product_id[i] + "';";
+                statement2.execute(q);
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    }
+
+
 
 }
