@@ -26,6 +26,8 @@ public class dashboard
 
     static String usern;
     static String order_id;
+    static ScrollPane sp = new ScrollPane();
+    static Scene dashboard_scene;
 
 
     public static void star(Stage primaryStage,Scene scene,String username) throws Exception
@@ -87,31 +89,32 @@ public class dashboard
         CartImageView.setFitWidth(80);
         CartImageView.setPreserveRatio(true);
         Menu cartItem = new Menu("",CartImageView);
-        rightBar.getMenus().add(cartItem);
+
+        Label Cartlabel=new Label("Cart");
+        //rightBar.getMenus().add(cartItem);
+
+        Cartlabel.setStyle(hoverstyle);
         cartItem.setStyle(hoverstyle);
 
-        CartImageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        Cartlabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                try {
-                    Cart.cart(primaryStage);
+                try
+                {
+                    System.out.println("enter into cart");
+                    Cart.cart(primaryStage,dashboard_scene,username);
+                    System.out.println("enter into cart");
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
 
             }
         });
-//        cartItem.setOnAction(new EventHandler<ActionEvent>() {
-//            @Override
-//            public void handle(ActionEvent actionEvent) {
-//                try {
-//                    Cart.cart(primaryStage);
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
 
+        Menu fileMenuButton = new Menu();
+        fileMenuButton.setGraphic(Cartlabel);
+        rightBar.getMenus().add(fileMenuButton);
         Menu account = new Menu("ACCOUNT");
         account.setStyle(hoverstyle);
         MenuItem orders=new MenuItem("ORDERS");
@@ -464,11 +467,12 @@ public class dashboard
 
                 }
 
+                /*
                 try {
                     place_order();
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
-                }
+                }*/
 
 
             } );
@@ -524,13 +528,14 @@ public class dashboard
         vbox.getChildren().add(menubars);
         vbox.getChildren().add(filter);
         vbox.getChildren().add(tilePane);
-        ScrollPane sp = new ScrollPane();
+
         sp.setFitToWidth(true);
         sp.setFitToHeight(true);
         ScrollBar scroll = new ScrollBar();
         scroll.setMin(0);
         sp.setContent(vbox);
         Scene nscene =new Scene(sp, 800, 600);
+        dashboard_scene = nscene;
         primaryStage.setScene(nscene);
         primaryStage.setMaximized(true);
         nscene.setRoot(sp);

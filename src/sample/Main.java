@@ -261,7 +261,7 @@ public class Main extends Application
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection(
-                    "jdbc:mysql://localhost:3306/ecommerce", "root", "adwait");
+                    "jdbc:mysql://localhost:3306/ecommerce", "root", "shreya");
 //here ecommerce is database name, root is username and adwait is the password
             Database_Connection.getInstance().getConnection(con);
 
