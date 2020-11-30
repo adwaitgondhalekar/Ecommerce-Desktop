@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.*;
 import javafx.stage.Stage;
@@ -85,16 +86,27 @@ public class dashboard
         rightBar.getMenus().add(cartItem);
         cartItem.setStyle(hoverstyle);
 
-        cartItem.setOnAction(new EventHandler<ActionEvent>() {
+        CartImageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
-            public void handle(ActionEvent actionEvent) {
+            public void handle(MouseEvent mouseEvent) {
                 try {
-                    cart(primaryStage);
+                    Cart.cart(primaryStage);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+
             }
         });
+//        cartItem.setOnAction(new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent actionEvent) {
+//                try {
+//                    Cart.cart(primaryStage);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
 
         Menu account = new Menu("ACCOUNT");
         account.setStyle(hoverstyle);
@@ -414,30 +426,12 @@ public class dashboard
             HBox cartFunctions= new HBox(20);
 
             add_to_cart_button[i] = new Button("Add to Cart");
-            //add_to_cart_button[i].setText("Add to cart");
 
             add_to_cart_button[i].setStyle("-fx-background-color: #b38de3;-fx-border-color: black;-fx-hovered-background:white");
             add_to_cart_button[i].setTranslateY(20);
             Label quantity= new Label();
             final int[] count = {1};
 
-//            add_to_cart_button[i].setOnAction(new EventHandler<ActionEvent>()
-//            {
-//                @Override
-//                public void handle(ActionEvent actionEvent)
-//                {
-//                    if(count[0]==0)
-//                           count[0]++;
-//                    quantity.setText(Integer.toString(count[0]));
-//
-//                    try {
-//                        cart(primaryStage);
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//
-//                }
-//            });
             int finalI = i;
 
 
