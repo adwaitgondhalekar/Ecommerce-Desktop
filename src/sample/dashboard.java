@@ -419,7 +419,7 @@ public class dashboard
             add_to_cart_button[i].setStyle("-fx-background-color: #b38de3;-fx-border-color: black;-fx-hovered-background:white");
             add_to_cart_button[i].setTranslateY(20);
             Label quantity= new Label();
-            final int[] count = {0};
+            final int[] count = {1};
 
 //            add_to_cart_button[i].setOnAction(new EventHandler<ActionEvent>()
 //            {
@@ -445,22 +445,28 @@ public class dashboard
                 //lastClickedIndex[0] =buttonInd;
                 //System.out.print("Button pressed "+((Button)actionEvent.getSource()).getText()+ lastClickedIndex[0]);
                 //System.out.print("Button pressed "+((Button)actionEvent.getSource()).getText()+ finalI);
-
-                try {
-                    Statement prodIdstmt = con.createStatement();
-                    String prodIdquery = "select product_id from product where product_name='"+ prod_names[finalI]+"';";
-                    ResultSet prodIdresultSet = prodIdstmt.executeQuery(prodIdquery);
-                    String product_id;
-                    prodIdresultSet.next();
-                    product_id=prodIdresultSet.getString("product_id");
-                    Statement Cartstmt = con.createStatement();
-                    Cartstmt.executeUpdate("insert ignore into in_cart values('"+username+"','"+product_id+"');");
-
-
-                } catch (SQLException throwables)
+                for(int m=0;m<count[0];m++)
                 {
-                    throwables.printStackTrace();
+                    try
+                    {
+                        Statement prodIdstmt = con.createStatement();
+                        String prodIdquery = "select product_id from product where product_name='"+ prod_names[finalI]+"';";
+                        ResultSet prodIdresultSet = prodIdstmt.executeQuery(prodIdquery);
+                        String product_id;
+                        prodIdresultSet.next();
+                        product_id=prodIdresultSet.getString("product_id");
+                        Statement Cartstmt = con.createStatement();
+                        Cartstmt.executeUpdate("insert ignore into in_cart values('"+username+"','"+product_id+"');");
+
+
+                    } catch (SQLException throwables)
+                    {
+                        throwables.printStackTrace();
+                    }
+
                 }
+
+
 
             } );
 
@@ -481,7 +487,7 @@ public class dashboard
             reduceProd.setOnAction((new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent actionEvent) {
-                    if(count[0]!=0)
+                    if(count[0]!=1)
                     {
                         count[0]--;
                         quantity.setText(Integer.toString(count[0]));
