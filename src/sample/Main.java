@@ -67,6 +67,7 @@ public class Main extends Application
 
 
         usernametext.setPrefWidth(200);
+        usernametext.clear();
 
         username_error_login.setTranslateX(125);
 
@@ -76,6 +77,7 @@ public class Main extends Application
         password.setFont(Font.font("Tahoma", FontWeight.NORMAL, 16));
 
         passwordField.setPrefWidth(200);
+        passwordField.clear();
 
         password_error_login.setTranslateX(125);
 
@@ -282,7 +284,7 @@ public class Main extends Application
 //        stm2.executeUpdate("create table if not exists cart(cart_id varchar(20),primary key(cart_id));");
 
         Statement stmt3 =con.createStatement();
-        stmt3.executeUpdate("create table if not exists orders(order_id varchar(20),username varchar(20),tot_amt float,product_qty integer, primary key(order_id),foreign key(username) references user(username));");
+        stmt3.executeUpdate("create table if not exists orders(order_id varchar(20),username varchar(20),tot_amt float,product_qty integer,timestamp varchar(21), primary key(order_id),foreign key(username) references user(username));");
 
         Statement stmt4=con.createStatement();
         stmt4.executeUpdate("create table if not exists product(product_id varchar(20),product_name varchar(100),product_category varchar(20),price float(10),product_img varchar(500),description varchar(200),primary key(product_id));");

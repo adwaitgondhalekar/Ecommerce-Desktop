@@ -17,6 +17,8 @@ import javafx.scene.text.*;
 import javafx.stage.Stage;
 
 import java.sql.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import static sample.Cart.cart;
 
@@ -90,7 +92,7 @@ public class dashboard
         CartImageView.setPreserveRatio(true);
         Menu cartItem = new Menu("",CartImageView);
 
-        Label Cartlabel=new Label("Cart");
+        Label Cartlabel=new Label("CART");
         //rightBar.getMenus().add(cartItem);
 
         Cartlabel.setStyle(hoverstyle);
@@ -101,9 +103,11 @@ public class dashboard
             public void handle(MouseEvent mouseEvent) {
                 try
                 {
-                    System.out.println("enter into cart");
+                    //System.out.println("enter into cart");
                     Cart.cart(primaryStage,dashboard_scene,username);
-                    System.out.println("enter into cart");
+                    //primaryStage.setScene(dashboard_scene);
+                    //primaryStage.show();
+
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -113,8 +117,11 @@ public class dashboard
         });
 
         Menu fileMenuButton = new Menu();
+        fileMenuButton.setStyle(hoverstyle);
         fileMenuButton.setGraphic(Cartlabel);
+        rightBar.getMenus().add(cartItem);
         rightBar.getMenus().add(fileMenuButton);
+
         Menu account = new Menu("ACCOUNT");
         account.setStyle(hoverstyle);
         MenuItem orders=new MenuItem("ORDERS");
@@ -123,6 +130,27 @@ public class dashboard
         signout.setStyle(menuitemstyle);
         account.getItems().addAll(orders,signout);
         rightBar.getMenus().add(account);
+
+        orders.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                try {
+                    all_orders.display_orders(primaryStage,username,dashboard_scene);
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+        });
+        signout.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+
+                primaryStage.setScene(scene);
+                primaryStage.setMaximized(true);
+                primaryStage.show();
+
+            }
+        });
 
         rightBar.setStyle(styles);
         Region spacer = new Region();
@@ -443,9 +471,6 @@ public class dashboard
 
 
             add_to_cart_button[i].setOnAction(actionEvent ->{
-                //lastClickedIndex[0] =buttonInd;
-                //System.out.print("Button pressed "+((Button)actionEvent.getSource()).getText()+ lastClickedIndex[0]);
-                //System.out.print("Button pressed "+((Button)actionEvent.getSource()).getText()+ finalI);
                 for(int m=0;m<count[0];m++)
                 {
                     try
@@ -467,12 +492,6 @@ public class dashboard
 
                 }
 
-                /*
-                try {
-                    place_order();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }*/
 
 
             } );
@@ -579,6 +598,12 @@ public class dashboard
         }
     public static void place_order() throws SQLException
     {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:SS");
+
+        LocalDateTime now = LocalDateTime.now();
+
+        String timestamp = dtf.format(now);
+
         Statement stmt=con.createStatement();
         String get_products = "select product_id,count(*) as qty from in_cart group by product_id";
         ResultSet prod_list = stmt.executeQuery(get_products);
@@ -656,17 +681,21 @@ public class dashboard
 
         Statement ins_order = con.createStatement();
 
-        String ins_query = "insert into orders values('"+f_order_id+"','"+usern+"',"+total_amt+","+total_prod+");";
+        String ins_query = "insert into orders values('"+f_order_id+"','"+usern+"',"+total_amt+","+total_prod+",'"+timestamp+"');";
 
         ins_order.execute(ins_query);
 
         for(int i=0;i<qty.length;i++)
         {
-            String contains_query = "insert into contains values('"+product_id[i]+"','"+f_order_id+"');";
+            for(int j=0;j<qty[i];j++) {
 
-            Statement statement2 = con.createStatement();
 
-            statement2.execute(contains_query);
+                String contains_query = "insert into contains values('" + product_id[i] + "','" + f_order_id + "');";
+
+                Statement statement2 = con.createStatement();
+
+                statement2.execute(contains_query);
+            }
         }
 
 
