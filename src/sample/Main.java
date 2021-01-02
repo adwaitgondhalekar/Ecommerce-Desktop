@@ -139,10 +139,7 @@ public class Main extends Application
         root=rootnode;
 
         stage.setMaximized(true);
-
-
         stage.setScene(scene);
-
         stage.show();
 
         create_connection();
@@ -230,12 +227,12 @@ public class Main extends Application
 
                 retrieved_username = resultSet.getString("username");
                 retrieved_password = resultSet.getString("password");
-                System.out.println(retrieved_username);
-                System.out.println(retrieved_password);
+                //System.out.println(retrieved_username);
+                //System.out.println(retrieved_password);
 
                 if (retrieved_username.equals(login_username) && retrieved_password.equals(login_password))
                 {
-                    System.out.println(login_username);
+                    //System.out.println(login_username);
 
                     dashboard.star(stage,scene,login_username);
                    // Cart.cart(stage,scene);
@@ -278,22 +275,22 @@ public class Main extends Application
         con=Database_Connection.getInstance().con;
 
         Statement stmt1 = con.createStatement();
-        stmt1.executeUpdate("create table if not exists user(username varchar(20) ,email varchar(30),password varchar(20),contact_no varchar(10),primary key(username));");
+        stmt1.executeUpdate("create table if not exists user(username varchar(50) ,email varchar(50),password varchar(20),contact_no varchar(10),primary key(username));");
 
 //        Statement stm2=con.createStatement();
 //        stm2.executeUpdate("create table if not exists cart(cart_id varchar(20),primary key(cart_id));");
 
         Statement stmt3 =con.createStatement();
-        stmt3.executeUpdate("create table if not exists orders(order_id varchar(20),username varchar(20),tot_amt float,product_qty integer,timestamp varchar(21), primary key(order_id),foreign key(username) references user(username));");
+        stmt3.executeUpdate("create table if not exists orders(order_id varchar(50),username varchar(50),tot_amt float,product_qty integer,timestamp varchar(21), primary key(order_id),foreign key(username) references user(username));");
 
         Statement stmt4=con.createStatement();
-        stmt4.executeUpdate("create table if not exists product(product_id varchar(20),product_name varchar(100),product_category varchar(20),price float(10),product_img varchar(500),description varchar(200),primary key(product_id));");
+        stmt4.executeUpdate("create table if not exists product(product_id varchar(50),product_name varchar(100),product_category varchar(50),price float(10),product_img varchar(500),description varchar(200),primary key(product_id));");
 
         Statement stmt5= con.createStatement();
-        stmt5.executeUpdate("create table if not exists contains(product_id varchar(20),order_id varchar(20),foreign key(product_id) references product(product_id),foreign key(order_id) references orders(order_id));");
+        stmt5.executeUpdate("create table if not exists contains(product_id varchar(50),order_id varchar(50),foreign key(product_id) references product(product_id),foreign key(order_id) references orders(order_id));");
 
         Statement stmt6 = con.createStatement();
-        stmt6.executeUpdate("create table if not exists in_cart(username varchar(20),product_id varchar(20),foreign key(username) references user(username),foreign key(product_id) references product(product_id));");
+        stmt6.executeUpdate("create table if not exists in_cart(username varchar(50),product_id varchar(50),foreign key(username) references user(username),foreign key(product_id) references product(product_id));");
 
         Statement stmt7 = con.createStatement();
         stmt7.executeUpdate("insert ignore into product values('D_01','SASSAFRAS Sea Wash Peterpan Collar Pleated Dress','dresses',799,'https://shoprapy.com/wp-content/uploads/2020/03/bd8f2ff9-186b-4983-b9b6-88654f2d13661564380201384-SASSAFRAS-Women-Blue-A-Line-Dress-9861564380199640-1.jpg','Periwinkle blue Fit n flared flowy silhouette')");
@@ -314,7 +311,7 @@ public class Main extends Application
         stmt12.executeUpdate("insert ignore into product values('D_06','SASSAFRAS Women Maroon Solid Tiered Maxi Dress','dresses',879,'https://img.looksgud.com/upload/item-image/1973/16b2f/16b2f-sassafras-women-maroon-solid-tiered-maxi-dress_500x500_0.jpg','Maroon solid woven tiered maxi dress, has a square neck, short sleeves, concealed zip closure, an attached lining, and flounce hem Comes with a belt')");
 
         Statement stmt13 = con.createStatement();
-        stmt13.executeUpdate("insert ignore into product values('D_07','RARE Women Black Printed Fit and Flare Dress','dresses',899,'https://img.pricue.com/images/ar/rare-women-black-printed-fit-and-flare-dress396ad2473dff2d.jpg','Black printed woven fit and flare dress, has a round neck, long sleeves, button closure, an attached lining, flared hem')");
+        stmt13.executeUpdate("insert ignore into product values('D_07','RARE Women Black Printed Fit and Flare Dress','dresses',899,'https://img.looksgud.com/upload/item-image/1068/mway/mway-rare-women-black-printed-fit-and-flare-dress_500x500_0.jpg','Black printed woven fit and flare dress, has a round neck, long sleeves, button closure, an attached lining, flared hem')");
 
         Statement stmt14 = con.createStatement();
         stmt14.executeUpdate("insert ignore into product values('D_08','BerryLush Women Brown & White Floral Printed Two Piece Maxi Dress','dresses',984,'https://cdn.shopify.com/s/files/1/1018/4207/products/2_2b53443b-d5f8-44be-97ad-b65dc110263f_2000x.jpg?v=1596533707','Brown and white floral printed woven two piece maxi dress, has an off-shoulder neck, short sleeves, concealed zip closure, and flared hem with a high side slit')");
@@ -383,7 +380,7 @@ public class Main extends Application
         stmt35.executeUpdate("insert ignore into product values('Tr_09','SOJANYA Men Navy Blue & Pink Smart Fit Striped Formal Trousers','trousers',896,'https://assets.myntassets.com/dpr_1.5,q_60,w_400,c_limit,fl_progressive/assets/images/11398086/2020/2/10/ca7d6a04-996c-4e71-a17e-5c7bfda64b571581330771117-SOJANYA-Men-Navy-Blue--Pink-Smart-Regular-Fit-Striped-Regula-1.jpg','Navy blue and pink striped mid-rise formal trousers, button closure, and five pockets')");
 
         Statement stmt36 = con.createStatement();
-        stmt36.executeUpdate("insert ignore into product values('Tr_10','MANQ Men Coffee Brown Smart Slim Fit Solid Formal Trousers','trousers',764,'https://www.manq.in/wp-content/uploads/2019/12/1-6.jpg','Coffee Brown solid mid-rise trousers, button closure,zip fly  and 5 pockets.Our stylist has paired these trousers with a belt.This pair of trousers does not come with a beltS')");
+        stmt36.executeUpdate("insert ignore into product values('Tr_10','MANQ Men Coffee Brown Smart Slim Fit Solid Formal Trousers','trousers',764,'https://img.looksgud.com/upload/item-image/2253/1cb5m/1cb5m-manq-men-coffee-brown-smart-slim-fit-solid-formal-trousers_500x500_3.jpg','Coffee Brown solid mid-rise trousers, button closure,zip fly  and 5 pockets.Our stylist has paired these trousers with a belt.This pair of trousers does not come with a beltS')");
         //Tops
         Statement stmt37 = con.createStatement();
         stmt37.executeUpdate("insert ignore into product values('T_01','SASSAFRAS Women Black Solid High Neck Cropped Top','tops',599,'https://img.looksgud.com/upload/item-image/2035/17mg7/17mg7-sassafras-women-black-solid-crop-top_500x500_2.jpg','Black solid knitted crop top, has a high neck, and long sleeves')");
@@ -674,6 +671,8 @@ public class Main extends Application
         root_signup.setAlignment(Pos.CENTER);
 
         scene.setRoot(root_signup);
+        stage.setMinWidth(1000);
+        stage.setMinHeight(800);
 
         stage.show();
 

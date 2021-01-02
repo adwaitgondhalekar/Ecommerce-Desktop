@@ -51,9 +51,9 @@ public class Cart
             String id=inCartResult1.getString("product_id");
             int quant=inCartResult1.getInt("qty");
             prod_id[pos]=id;
-            System.out.println(prod_id[pos]);
+            //System.out.println(prod_id[pos]);
             prod_qty[pos]=quant;
-            System.out.println(prod_qty[pos]);
+            //System.out.println(prod_qty[pos]);
             pos+=1;
 
         }

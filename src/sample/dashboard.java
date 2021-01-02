@@ -556,8 +556,8 @@ public class dashboard
         Scene nscene =new Scene(sp, 800, 600);
         dashboard_scene = nscene;
         primaryStage.setScene(nscene);
-        primaryStage.setMaximized(true);
         nscene.setRoot(sp);
+        primaryStage.setMaximized(true);
         primaryStage.setFullScreen(true);
         primaryStage.show();
     }
@@ -613,7 +613,7 @@ public class dashboard
         {
             count+=1;
         }
-        System.out.println(count);
+        //System.out.println(count);
         String[] product_id = new String[count];
         int[] qty =new int[count];
 
@@ -630,8 +630,8 @@ public class dashboard
             product_id[pos]=prod_id;
             qty[pos]=quant;
 
-            System.out.println(prod_id);
-            System.out.println(quant);
+            //System.out.println(prod_id);
+           // System.out.println(quant);
 
             pos+=1;
         }
